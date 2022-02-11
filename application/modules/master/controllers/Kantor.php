@@ -25,7 +25,7 @@ class Kantor extends CI_Controller
 
         //$data["Kantor"] = $this->Kantor_M->getAll();
         $data["title"] = "List Data Master Kantor";
-        $this->template->load('template','Kantor/Kantor_v',$data);
+        $this->template->load('template','kantor/kantor_v',$data);
      
     }
 
@@ -70,7 +70,7 @@ class Kantor extends CI_Controller
     function tambah(){
           //$data["Kantor"] = $this->Kantor_M->getAll();
           $data["title"] = "List Data Master Kantor";
-          $this->template->load('template','Kantor/Kantor_tambah',$data);
+          $this->template->load('template','kantor/kantor_tambah',$data);
     }
 
     function simpan(){
@@ -119,7 +119,7 @@ class Kantor extends CI_Controller
        
 
         $data["title"] = "List Data Master Kantor";
-        $this->template->load('template','Kantor/Kantor_edit',$data);
+        $this->template->load('template','kantor/kantor_edit',$data);
     }
 
     function update_simpan(){
