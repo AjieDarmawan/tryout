@@ -3221,8 +3221,7 @@
                                     }
                                     
                                     
-                                    
-                                    
+      
                                     else{
                                         echo '"fc-event-primary"';
                                     } 

@@ -138,21 +138,47 @@ class Absen extends CI_Controller
                  $xx = 01;
                  for ($x = 1; $x <= $jumlah_hari; $x++) 
                 {
-                
-                  // echo "The number is: ".$i++." <br>";
 
-                    $data_insert = array(
-                        'id_karyawan'=>$sql->id_karyawan,
-                        'jenis_masuk'=>$d[0][$i++],
-                        'tanggal'=>$bulan.'-'.$x++,
-                        'id_ktr'=>$sql->ktr_id,
-                        'ket'=>'',
-                    );
+                   
+                  // echo "The number is: ".str_pad($xx++, 2, '0', STR_PAD_LEFT)." <br>";
 
-                    $this->db->insert('jadwal',$data_insert);
-                
+                    $tgl_hari = str_pad($xx++, 2, '0', STR_PAD_LEFT);
+
+
+                    $sql_cek = $this->db->query("select * from jadwal where tanggal = '".$bulan.'-'.$tgl_hari."' and id_karyawan = '".$sql->id_karyawan."'")->row();
+
+                    
+
+                    if($sql_cek){
+
+                        $data_insert = array(
+                            'id_karyawan'=>$sql->id_karyawan,
+                            'jenis_masuk'=>$d[0][$i++],
+                            'tanggal'=>$bulan.'-'.$tgl_hari,
+                            'id_ktr'=>$sql->ktr_id,
+                            'ket'=>'',
+                        );
+
+                        $this->db->update('jadwal',$data_insert,array('id_jadwal'=>$sql_cek->id_jadwal));
+
+                    }else{
+
+                        $data_insert = array(
+                            'id_karyawan'=>$sql->id_karyawan,
+                            'jenis_masuk'=>$d[0][$i++],
+                            'tanggal'=>$bulan.'-'.$tgl_hari,
+                            'id_ktr'=>$sql->ktr_id,
+                            'ket'=>'',
+                        );
+
+                        $this->db->insert('jadwal',$data_insert);
+                    }
+
                 
                 }
+
+
+                redirect('absen/upload_jadwal');
 
                 
             }else{

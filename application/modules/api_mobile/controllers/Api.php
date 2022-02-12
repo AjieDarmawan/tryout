@@ -273,7 +273,7 @@ class Api extends CI_Controller
                   'tujuan_long'=>$long_tujuan,
                   'posisi_lat'=>$lat,
                   'posisi_long'=>$long,
-                  'jarak_skrang'=>$jarak_skrang,
+                  'jarak_skrang'=>"".$jarak_skrang."",
                   'status_button'=> $status_button,
                   'radius'=>$kar->radius,
                   'kantor'=>$kantor->kantor_nama

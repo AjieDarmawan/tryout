@@ -36,31 +36,19 @@ class Auth extends CI_Controller
                 $this->input->post('username'), 
                 $this->input->post('password'));
                
-           
-            // $user = (array) $this->session->userdata('session')['biodata_detail'];
-            // $user['kar_id'] = $this->session->userdata('session')['user']->$user['kar_id'];
-
-
-            // echo "<pre>";
-            // print_r($user);
-            // die;
-           
-            
-
+ 
             $pegawai = $this->Pegawai_model->select_by_id($user['id_kar']);
 
 
-            //      echo "<pre>";
-            // print_r($pegawai);
-            // die;
+            if($user){
+                $this->session->set_userdata(array('pegawai'=>$pegawai));
 
+                redirect('pegawai');
+            }else{
+                redirect('auth');
+            }
 
-                
-
-
-             $this->session->set_userdata(array('pegawai'=>$pegawai));
-
-            redirect('pegawai');
+            
     }
 
     // log the user out
