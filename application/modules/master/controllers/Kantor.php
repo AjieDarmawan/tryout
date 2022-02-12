@@ -21,8 +21,7 @@ class Kantor extends CI_Controller
     // redirect if needed, otherwise display the user list
     public function index()
     {
-        echo "tes";   
-        die;
+       
         //$data["Kantor"] = $this->Kantor_M->getAll();
         $data["title"] = "List Data Master Kantor";
         $this->template->load('template','kantor/kantor_v',$data);

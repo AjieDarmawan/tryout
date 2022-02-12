@@ -25,7 +25,7 @@ class Level extends CI_Controller
 
         //$data["Level"] = $this->Level_M->getAll();
         $data["title"] = "List Data Master Level";
-        $this->template->load('template','Level/Level_v',$data);
+        $this->template->load('template','level/level_v',$data);
      
     }
 
@@ -40,7 +40,7 @@ class Level extends CI_Controller
         foreach ($list as $data_Level) {
 
 
-            $edit = "<a data-toggle='tooltip' title='Edit'  href=".base_url('master/Level/update/'.base64_encode($data_Level->lvl_id))."><button class='btn btn-success btn-xs'><i class='fa fa-edit'></i></button></a>";
+            $edit = "<a data-toggle='tooltip' title='Edit'  href=".base_url('master/level/update/'.base64_encode($data_Level->lvl_id))."><button class='btn btn-success btn-xs'><i class='fa fa-edit'></i></button></a>";
 			 $delete =  "<a  data-toggle='tooltip' title='Hapus' id='$data_Level->lvl_id' class='hapus_dokumen' ><button class='btn btn-xs btn-danger'><i class='fa fa-trash'></i></button></a>";
 
 
@@ -65,7 +65,7 @@ class Level extends CI_Controller
     function tambah(){
           //$data["Level"] = $this->Level_M->getAll();
           $data["title"] = "List Data Master Level";
-          $this->template->load('template','Level/Level_tambah',$data);
+          $this->template->load('template','level/level_tambah',$data);
     }
 
     function simpan(){
@@ -77,7 +77,7 @@ class Level extends CI_Controller
            $this->session->set_flashdata('status',"success");
 			$this->session->set_flashdata('message', "<b>Success <i class='fa fa-check-square-o'></i></b> Tambah data berhasil");
             
-            redirect('master/Level/');
+            redirect('master/level/');
         
         }else{
 
@@ -92,7 +92,7 @@ class Level extends CI_Controller
        
 
         $data["title"] = "List Data Master Level";
-        $this->template->load('template','Level/Level_edit',$data);
+        $this->template->load('template','level/level_edit',$data);
     }
 
     function update_simpan(){
@@ -106,7 +106,7 @@ class Level extends CI_Controller
            $this->session->set_flashdata('status',"success");
 			$this->session->set_flashdata('message', "<b>Success <i class='fa fa-check-square-o'></i></b>  Data berhasil di simpan");
             
-            redirect('master/Level/');
+            redirect('master/level/');
         
         }else{
 

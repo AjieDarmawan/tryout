@@ -276,6 +276,7 @@ class Api extends CI_Controller
                   'jarak_skrang'=>$jarak_skrang,
                   'status_button'=> $status_button,
                   'radius'=>$kar->radius,
+                  'kantor'=>$kantor->kantor_nama
               );
 
               echo json_encode($data_json);

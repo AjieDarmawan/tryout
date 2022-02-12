@@ -11,7 +11,7 @@ class Karyawan extends CI_Controller
 		// if(!$this->session->userdata(['pegawai']['kar_pvl']=='U')){
 		// 	redirect('auth');
 		// }
-        $this->load->model(array('Karyawan_M','master/Divisi_M','master/Jabatan_M','master/Kantor_M'));
+        $this->load->model(array('Karyawan_M','Divisi_M','Jabatan_M','Kantor_M'));
 		
     }
 
@@ -25,7 +25,7 @@ class Karyawan extends CI_Controller
 
         //$data["Karyawan"] = $this->Karyawan_M->getAll();
         $data["title"] = "List Data Master Karyawan";
-        $this->template->load('template','Karyawan/Karyawan_v',$data);
+        $this->template->load('template','karyawan/karyawan_v',$data);
      
     }
 
@@ -97,7 +97,7 @@ class Karyawan extends CI_Controller
 
 
           $data["jabatan"] = $this->Jabatan_M->getAll();
-          $this->template->load('template','Karyawan/Karyawan_tambah',$data);
+          $this->template->load('template','karyawan/karyawan_tambah',$data);
     }
 
     function simpan(){

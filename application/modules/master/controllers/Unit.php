@@ -25,7 +25,7 @@ class Unit extends CI_Controller
 
         //$data["Unit"] = $this->Unit_M->getAll();
         $data["title"] = "List Data Master Unit";
-        $this->template->load('template','Unit/Unit_v',$data);
+        $this->template->load('template','unit/unit_v',$data);
      
     }
 
@@ -40,7 +40,7 @@ class Unit extends CI_Controller
         foreach ($list as $data_Unit) {
 
 
-            $edit = "<a data-toggle='tooltip' title='Edit'  href=".base_url('master/Unit/update/'.base64_encode($data_Unit->unt_id))."><button class='btn btn-success btn-xs'><i class='fa fa-edit'></i></button></a>";
+            $edit = "<a data-toggle='tooltip' title='Edit'  href=".base_url('master/unit/update/'.base64_encode($data_Unit->unt_id))."><button class='btn btn-success btn-xs'><i class='fa fa-edit'></i></button></a>";
 			 $delete =  "<a  data-toggle='tooltip' title='Hapus' id='$data_Unit->unt_id' class='hapus_dokumen' ><button class='btn btn-xs btn-danger'><i class='fa fa-trash'></i></button></a>";
 
 
@@ -65,7 +65,7 @@ class Unit extends CI_Controller
     function tambah(){
           //$data["Unit"] = $this->Unit_M->getAll();
           $data["title"] = "List Data Master Unit";
-          $this->template->load('template','Unit/Unit_tambah',$data);
+          $this->template->load('template','unit/unit_tambah',$data);
     }
 
     function simpan(){
@@ -92,7 +92,7 @@ class Unit extends CI_Controller
        
 
         $data["title"] = "List Data Master Unit";
-        $this->template->load('template','Unit/Unit_edit',$data);
+        $this->template->load('template','unit/unit_edit',$data);
     }
 
     function update_simpan(){

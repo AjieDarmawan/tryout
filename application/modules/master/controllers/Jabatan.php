@@ -11,7 +11,7 @@ class Jabatan extends CI_Controller
 		// if(!$this->session->userdata(['pegawai']['kar_pvl']=='U')){
 		// 	redirect('auth');
 		// }
-        $this->load->model(array('Jabatan_M','master/Divisi_M'));
+        $this->load->model(array('Jabatan_M','Divisi_M'));
 		
     }
 

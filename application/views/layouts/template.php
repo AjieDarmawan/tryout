@@ -3215,6 +3215,10 @@
                                     else if($j->jenis_masuk == 'WFH' ){
                                         echo '"fc-event-light fc-event-solid-primary"';
                                     }
+
+                                    else if($j->jenis_masuk == 'M' ){
+                                        echo '"fc-event-light fc-event-solid-dark"';
+                                    }
                                     
                                     
                                     

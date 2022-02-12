@@ -37,9 +37,16 @@ class Absen extends CI_Controller
     function simpan_upload_jadwal()
     {
 
+
+        $bulan = $this->input->post('bulan');
+        // echo $bulan;
+        // die;    
       
         if(isset($_FILES["file"]["name"]))
         {
+
+
+           
             // upload
           $file_tmp = $_FILES['file']['tmp_name'];
           $file_name = $_FILES['file']['name'];
@@ -137,9 +144,9 @@ class Absen extends CI_Controller
                     $data_insert = array(
                         'id_karyawan'=>$sql->id_karyawan,
                         'jenis_masuk'=>$d[0][$i++],
-                        'tanggal'=>date('Y-m').'-'.$x++,
+                        'tanggal'=>$bulan.'-'.$x++,
                         'id_ktr'=>$sql->ktr_id,
-                        'ket'=>'tes',
+                        'ket'=>'',
                     );
 
                     $this->db->insert('jadwal',$data_insert);
@@ -173,7 +180,16 @@ class Absen extends CI_Controller
 
     function jadwal(){
 
-        $data['jadwal'] = $this->db->query("select * from jadwal where id_karyawan = 10")->result();
+        $sess = $this->session->userdata();
+
+        $id_kar = $sess['pegawai']['id_kar'];
+
+        // echo "<pre>";
+        // print_r($sess);
+        // die;
+
+      
+        $data['jadwal'] = $this->db->query("select * from jadwal where id_karyawan = '".$id_kar."'")->result();
         $data["title"] = "List Data Master Jadwal";
         $this->template->load('template','absen/v_jadwal',$data);
      

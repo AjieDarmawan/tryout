@@ -11,7 +11,7 @@
 
             <div class="col-md-4">
                 <form action="<?php echo base_url('absen/simpan_upload_jadwal') ?>" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file">
+                    <input type="file" required name="file">
 
                     <input type="month" class="col-md-4" name="bulan">
 
