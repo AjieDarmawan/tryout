@@ -11,7 +11,17 @@ class Absen extends CI_Controller
 		// if(!$this->session->userdata(['pegawai']['kar_pvl']=='U')){
 		// 	redirect('auth');
 		// }
-        $this->load->model(array('Absen_M'));
+
+        if ($this->session->userdata['pegawai'] == TRUE)
+        {
+            //do something
+            $this->load->model(array('Absen_M'));
+        }
+        else
+        {
+            redirect('auth'); //if session is not there, redirect to login page
+        }   
+      
 		
     }
 
@@ -210,12 +220,22 @@ class Absen extends CI_Controller
 
         $id_kar = $sess['pegawai']['id_kar'];
 
-        // echo "<pre>";
-        // print_r($sess);
-        // die;
+        $level = $sess['pegawai']['level'];
+
+        
+
+        if($level=='A'){
+            $data['jadwal'] = $this->db->query("select j.*,m.nama_karyawan from jadwal as j
+            inner join m_karyawan as m on m.id_karyawan = j.id_karyawan")->result();
+        }else{
+            $data['jadwal'] = $this->db->query("select j.*,m.nama_karyawan from jadwal as j
+            inner join m_karyawan as m on m.id_karyawan = j.id_karyawan where  j.id_karyawan = '".$id_kar."'")->result();
+        }
 
       
-        $data['jadwal'] = $this->db->query("select * from jadwal where id_karyawan = '".$id_kar."'")->result();
+      
+
+      
         $data["title"] = "List Data Master Jadwal";
         $this->template->load('template','absen/v_jadwal',$data);
      

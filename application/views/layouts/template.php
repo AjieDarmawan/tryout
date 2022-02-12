@@ -38,8 +38,7 @@
     <link href="<?php echo base_url(); ?>assets/template/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
     <!--begin::Global Theme Styles(used by all pages)-->
-    <link href="<?php echo base_url(); ?>assets/template/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-
+  
 
 </head>
 <!--end::Head-->
@@ -3194,17 +3193,29 @@
                             <?php 
                                  foreach($jadwal as $j)
                                  {
-                             ?>        
+
+                                    $level = $sess['pegawai']['level'];
+
+                                   if($level=='A'){
+                                    
+
+                                       $title =  $j->nama_karyawan .'-'. $j->jenis_masuk;;
+                                   }else{
+                                       $title = $j->jenis_masuk;
+                                   }
+                             ?>    
+                             
+                             
                              
                                  {
-                                    title: '<?php echo $j->jenis_masuk;?>',
+                                    title: '<?php echo $title;?>',
                                     start: '<?php echo $j->tanggal;?>',
                                     description: '<?php echo $j->jenis_masuk;?>',
                                     className:  <?php if($j->jenis_masuk == 'L' ){
                                             echo '"fc-event-solid-danger fc-event-light"';
                                     }
 
-                                    else if($j->jenis_masuk == 'LN' ){
+                                    else if($j->jenis_masuk == 'LN' || $j->jenis_masuk == 'GL'){
                                         echo '"fc-event-solid-danger fc-event-light"';
                                     }
 

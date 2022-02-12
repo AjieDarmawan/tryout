@@ -196,7 +196,7 @@ class Api extends CI_Controller
             $lat_tujuan = $kantor->lat;
             $long_tujuan = $kantor->long;
 
-        }else if($jadwal->jenis_masuk=='WFH'){
+        }else if($jadwal->jenis_masuk=='WFH' || $jadwal->jenis_masuk=='M'){
 
             $lat_tujuan = $kar->lat;
             $long_tujuan = $kar->long;
@@ -210,7 +210,7 @@ class Api extends CI_Controller
        // error_reporting(0);
 
 
-        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?destinations=".$lat_tujuan.",".$long_tujuan."&origins=-6.507369,106.843742&mode=walking&key=AIzaSyAv55eTFQnFNA_nnzzDlGwJ0xJLg7shyow";
+        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?destinations=".$lat_tujuan.",".$long_tujuan."&origins=".$lat.",".$long."&mode=walking&key=AIzaSyAv55eTFQnFNA_nnzzDlGwJ0xJLg7shyow";
 
 
             $ch = curl_init($url);
