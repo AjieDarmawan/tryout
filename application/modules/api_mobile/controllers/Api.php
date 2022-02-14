@@ -21,7 +21,7 @@ class Api extends CI_Controller
         $id_kar = $this->input->post('id_kar');
 
         $lat = $this->input->post('lat');
-        $lang = $this->input->post('lang');
+        $long = $this->input->post('long');
 
 
         $kar  = $this->db->query("select * from m_karyawan where id_karyawan = '".$id_kar."'")->Row();
@@ -52,7 +52,7 @@ class Api extends CI_Controller
        // error_reporting(0);
 
 
-        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?destinations=".$lat_tujuan.",".$long_tujuan."&origins=-6.507369,106.843742&mode=walking&key=AIzaSyAv55eTFQnFNA_nnzzDlGwJ0xJLg7shyow";
+        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?destinations=".$lat_tujuan.",".$long_tujuan."&origins=".$lat.",".$long."&mode=walking&key=AIzaSyAv55eTFQnFNA_nnzzDlGwJ0xJLg7shyow";
 
 
             $ch = curl_init($url);
@@ -80,8 +80,9 @@ class Api extends CI_Controller
 
             // echo "<pre>";
             // print_r($output->rows[0]->elements[0]->distance->value);
-            //echo json_encode($output);
+            // echo json_encode($output);
 
+            // die;
             $jarak_skrang = $output->rows[0]->elements[0]->distance->value;
 
            //echo "<br>";
@@ -90,12 +91,18 @@ class Api extends CI_Controller
             // print_r();
             // die;
 
-            $jarak_orang = $kar->radius;
+          $jarak_orang = $kar->radius;
 
+        
+          
 
-              $jarak_orang * 1000;
+           $jarak_orang2 =   $jarak_orang * 1000;
+
+             
+
+       
               //40317  >=   500
-             if($jarak_skrang <= $jarak_orang){
+             if($jarak_skrang <= $jarak_orang2){
 
 
                 $check_absen = $this->db->query("select * from absen where id_karyawan = ".$id_kar." and date(masuk) = '".date('Y-m-d')."'")->row();
@@ -107,7 +114,7 @@ class Api extends CI_Controller
                 if($check_absen){
 
                         // jika dia sif 3 cek pulang kalo ada tambah/insert
-                    if($check_absen->pulang){
+                   if($check_absen->pulang != '0000-00-00 00:00:00'){
 
                         $data_insert = array(
                             'id_karyawan'=>$id_kar,
@@ -238,7 +245,7 @@ class Api extends CI_Controller
 
             // echo "<pre>";
             // print_r($output->rows[0]->elements[0]->distance->value);
-           // echo json_encode($output);
+          // echo json_encode($output);
 
             $jarak_skrang = $output->rows[0]->elements[0]->distance->value;
 
@@ -259,9 +266,13 @@ class Api extends CI_Controller
               error_reporting(0);
 
                if($check_absen->masuk){
-                    $status_button = "sudah_masuk";
-               }elseif($check_absen->pulang){
-                    $status_button = "sudah_pulang";
+
+                    if($check_absen->masuk && $check_absen->pulang){
+                        $status_button = "sudah_pulang";
+                    }else{
+                        $status_button = "sudah_masuk";
+                    }
+                   
                }else{
                     $status_button = "belum_masuk";
                }
@@ -275,7 +286,7 @@ class Api extends CI_Controller
                   'posisi_long'=>$long,
                   'jarak_skrang'=>"".$jarak_skrang."",
                   'status_button'=> $status_button,
-                  'radius'=>$kar->radius,
+                  'radius'=> $kar->radius * 1000,
                   'kantor'=>$kantor->kantor_nama
               );
 

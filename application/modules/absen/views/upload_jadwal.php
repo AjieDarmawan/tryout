@@ -13,7 +13,7 @@
                 <form action="<?php echo base_url('absen/simpan_upload_jadwal') ?>" method="post" enctype="multipart/form-data">
                     <input type="file" required name="file">
 
-                    <input type="month" class="col-md-4" name="bulan">
+                    <input type="month" required value="<?php echo date('Y-m')?>" class="col-md-4" name="bulan">
 
                     <button type="submit" class="btn btn-primary btn-sm">Upload</button>
                 </form>

@@ -188,7 +188,7 @@ class Absen extends CI_Controller
                 }
 
 
-                redirect('absen/upload_jadwal');
+              
 
                 
             }else{
@@ -196,6 +196,8 @@ class Absen extends CI_Controller
             }
             
         }
+
+          redirect('absen/upload_jadwal');
 
 
       }

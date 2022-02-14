@@ -11,7 +11,7 @@ class Karyawan extends CI_Controller
 		// if(!$this->session->userdata(['pegawai']['kar_pvl']=='U')){
 		// 	redirect('auth');
 		// }
-        $this->load->model(array('Karyawan_M','Divisi_M','Jabatan_M','Kantor_M'));
+        $this->load->model(array('Karyawan_M','Divisi_M','Level_M','Jabatan_M','Kantor_M'));
 		
     }
 
@@ -97,10 +97,14 @@ class Karyawan extends CI_Controller
 
 
           $data["jabatan"] = $this->Jabatan_M->getAll();
+
+          $data["level"] = $this->Level_M->getAll();
           $this->template->load('template','karyawan/karyawan_tambah',$data);
     }
 
     function simpan(){
+
+       
         $nik_kantor =  $this->input->post('nik_kantor');
         $nik_ktp =  $this->input->post('nik_ktp');
         $nama_karyawan =  $this->input->post('nama_karyawan');
@@ -132,6 +136,14 @@ class Karyawan extends CI_Controller
         $tanggal_join = $this->input->post('tanggal_join');
         $no_kk = $this->input->post('no_kk');
         $no_npwp = $this->input->post('no_npwp');
+
+        $no_kpj = $this->input->post('no_kpj');
+        $bank = $this->input->post('bank');
+        $no_rek = $this->input->post('no_rek');
+
+        $no_bpjs = $this->input->post('no_bpjs');
+
+        
        
 
         $data = array(
@@ -166,6 +178,11 @@ class Karyawan extends CI_Controller
         'tanggal_join' => $tanggal_join,
         'no_kk' => $no_kk,
         'no_npwp' => $no_npwp,
+
+        'no_kpj' => $no_kpj,
+        'bank' => $bank,
+        'no_rek' => $no_rek,
+        'no_bpjs'=>$no_bpjs,
         );
 
         // echo "<pre>";
@@ -175,7 +192,23 @@ class Karyawan extends CI_Controller
         //$simpan = $this->db->insert('m_karyawan', $data);
         $simpan = $this->Karyawan_M->save($data);
 
+        $id_kar_next = $this->db->insert_id();
+
         if($simpan){
+
+            $data_users = array(
+                'id_kar'=>$id_kar_next,
+                'username'=>$nik_kantor,
+                'password'=>rand(100000,999999),
+                'status'=>'Y',
+                'level'=>'U',
+            );
+
+            $this->db->insert('users',$data_users);
+
+          
+
+
 
         //     echo "sukses";
         //       echo "<pre>";

@@ -123,4 +123,9 @@ class Level_M extends CI_Model
     {
         return $this->db->delete($this->table, array("lvl_id" => $id));
     }
+
+    // function get(){
+    //     $sql = $this->db->query('select * from lvl_master');
+    //     return $sql->result();
+    // }
 }
