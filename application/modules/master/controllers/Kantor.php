@@ -52,6 +52,7 @@ class Kantor extends CI_Controller
             $row[] = $data_Kantor->lat;
             $row[] = $data_Kantor->long;
             $row[] = $data_Kantor->radius;
+           
            	$row[] = $edit." ".$delete;
 
             $data[] = $row;
@@ -78,6 +79,9 @@ class Kantor extends CI_Controller
         $kode_kantor =  $this->input->post('kode_kantor');
 
         $koordinator =  $this->input->post('koordinator');
+
+       
+
         $lat =  $this->input->post('lat');
         $long =  $this->input->post('long');
 

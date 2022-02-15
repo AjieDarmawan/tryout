@@ -29,7 +29,7 @@ class Kantor_M extends CI_Model
     private function _get_datatables_query()
     {
         $this->db->from($this->table);
-        $this->db->where('ktr_aktif','Y');
+        $this->db->where('ktr_aktif','A');
         $i = 0;
         foreach ($this->column_search as $item) // loop kolom 
         {
