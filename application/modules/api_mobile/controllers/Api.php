@@ -7,12 +7,12 @@ class Api extends CI_Controller
 
 
     function __construct(){
-		parent::__construct();
-		// if(!$this->session->userdata(['pegawai']['kar_pvl']=='U')){
-		// 	redirect('auth');
-		// }
+        parent::__construct();
+        // if(!$this->session->userdata(['pegawai']['kar_pvl']=='U')){
+        //  redirect('auth');
+        // }
       // $this->load->model(array('auth/auth_model'));
-		
+        
     }
 
     function absen(){
@@ -80,9 +80,8 @@ class Api extends CI_Controller
 
             // echo "<pre>";
             // print_r($output->rows[0]->elements[0]->distance->value);
-            // echo json_encode($output);
+            //echo json_encode($output);
 
-            // die;
             $jarak_skrang = $output->rows[0]->elements[0]->distance->value;
 
            //echo "<br>";
@@ -91,7 +90,9 @@ class Api extends CI_Controller
             // print_r();
             // die;
 
-          $jarak_orang = $kar->radius;
+
+
+            $jarak_orang = $kar->radius;
 
         
           
@@ -114,7 +115,7 @@ class Api extends CI_Controller
                 if($check_absen){
 
                         // jika dia sif 3 cek pulang kalo ada tambah/insert
-                   if($check_absen->pulang != '0000-00-00 00:00:00'){
+                         if($check_absen->pulang != '0000-00-00 00:00:00'){
 
                         $data_insert = array(
                             'id_karyawan'=>$id_kar,
@@ -203,11 +204,15 @@ class Api extends CI_Controller
             $lat_tujuan = $kantor->lat;
             $long_tujuan = $kantor->long;
 
-        }else if($jadwal->jenis_masuk=='WFH' || $jadwal->jenis_masuk=='M'){
+        }else if($jadwal->jenis_masuk=='WFH' || $jadwal->jenis_masuk=='M' ||  $jadwal->jenis_masuk=='L'){
 
             $lat_tujuan = $kar->lat;
             $long_tujuan = $kar->long;
+        }  else{
+            $lat_tujuan = $kar->lat;
+            $long_tujuan = $kar->long;
         }
+        
 
         
        
@@ -244,8 +249,8 @@ class Api extends CI_Controller
 
 
             // echo "<pre>";
-            // print_r($output->rows[0]->elements[0]->distance->value);
-          // echo json_encode($output);
+          //  print_r($output);
+          //  echo json_encode($output);
 
             $jarak_skrang = $output->rows[0]->elements[0]->distance->value;
 
@@ -267,7 +272,7 @@ class Api extends CI_Controller
 
                if($check_absen->masuk){
 
-                    if($check_absen->masuk && $check_absen->pulang){
+                    if($check_absen->masuk && $check_absen->pulang != '0000-00-00 00:00:00'){
                         $status_button = "sudah_pulang";
                     }else{
                         $status_button = "sudah_masuk";
@@ -286,13 +291,42 @@ class Api extends CI_Controller
                   'posisi_long'=>$long,
                   'jarak_skrang'=>"".$jarak_skrang."",
                   'status_button'=> $status_button,
-                  'radius'=> $kar->radius * 1000,
-                  'kantor'=>$kantor->kantor_nama
+                  'radius'=>$kar->radius * 1000,
+                  'kantor'=>$kantor->kantor_nama,
+                  'lokasi_skrang'=>$output->destination_addresses[0],
+                  'lokasi_tujuan'=>$output->origin_addresses[0],
               );
 
               echo json_encode($data_json);
             
 
+    }
+
+
+    function jadwal(){
+
+      
+
+       $id_kar = $this->input->post('id_kar');
+
+        $jadwal = $this->db->query("select j.*,m.nama_karyawan from jadwal as j
+        inner join m_karyawan as m on m.id_karyawan = j.id_karyawan where  j.id_karyawan = '".$id_kar."' 
+        and MONTH(j.tanggal) = '02' and year(j.tanggal) = '2022'
+        ")->result();
+
+        foreach($jadwal as $ja){
+            $data[] = array(
+                "id_jadwal"=> $ja->id_jadwal,
+                "id_karyawan"=> $ja->id_karyawan,
+                "jenis_masuk"=> $ja->jenis_masuk,
+                "tanggal"=>date('d-m-Y',strtotime($ja->tanggal)),
+                "id_ktr"=> $ja->id_ktr,
+                "ket"=> "",
+                "nama_karyawan"=> $ja->nama_karyawan,
+            );
+        }
+
+        echo json_encode($data);
     }
 
 

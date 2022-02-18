@@ -3135,6 +3135,10 @@
 
 
     <script src="<?php echo base_url(); ?>assets/template/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
+
+    <script src="<?php echo base_url(); ?>assets/template/assets/js/pages/crud/forms/widgets/bootstrap-timepicker.js"></script>
+   
+    <script src="<?php echo base_url(); ?>assets/template/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
     <!--end::Page Vendors-->
     <!--begin::Page Scripts(used by this page)-->
     <script>
@@ -3274,6 +3278,165 @@
             KTCalendarBasic.init();
         });
     </script>
+
+
+
+     <script>
+         var KTBootstrapTimepicker = function () {
+
+        // Private functions
+        var demos = function () {
+        // validation state demos
+        // minimum setup
+        $('#kt_timepicker_1_validate, #kt_timepicker_2_validate').timepicker({
+        minuteStep: 1,
+        showSeconds: true,
+        showMeridian: false,
+        snapToStep: true
+        });
+        }
+
+        return {
+        // public functions
+        init: function() {
+        demos();
+        }
+        };
+        }();
+
+        jQuery(document).ready(function() {
+        KTBootstrapTimepicker.init();
+        });
+     </script>
+
+
+     <script>
+         // Class definition
+
+var KTBootstrapDatepicker = function () {
+
+var arrows;
+if (KTUtil.isRTL()) {
+ arrows = {
+  leftArrow: '<i class="la la-angle-right"></i>',
+  rightArrow: '<i class="la la-angle-left"></i>'
+ }
+} else {
+ arrows = {
+  leftArrow: '<i class="la la-angle-left"></i>',
+  rightArrow: '<i class="la la-angle-right"></i>'
+ }
+}
+
+// Private functions
+var demos = function () {
+ // minimum setup
+ $('#kt_datepicker_1').datepicker({
+  rtl: KTUtil.isRTL(),
+  todayHighlight: true,
+  orientation: "bottom left",
+  templates: arrows
+ });
+
+ // minimum setup for modal demo
+ $('#kt_datepicker_1_modal').datepicker({
+  rtl: KTUtil.isRTL(),
+  todayHighlight: true,
+  orientation: "bottom left",
+  templates: arrows
+ });
+
+ // input group layout
+ $('#kt_datepicker_2').datepicker({
+  rtl: KTUtil.isRTL(),
+  todayHighlight: true,
+  orientation: "bottom left",
+  templates: arrows
+ });
+
+ // input group layout for modal demo
+ $('#kt_datepicker_2_modal').datepicker({
+  rtl: KTUtil.isRTL(),
+  todayHighlight: true,
+  orientation: "bottom left",
+  templates: arrows
+ });
+
+ // enable clear button
+ $('#kt_datepicker_3, #kt_datepicker_3_validate').datepicker({
+  rtl: KTUtil.isRTL(),
+  todayBtn: "linked",
+  clearBtn: true,
+  todayHighlight: true,
+  format: 'dd-mm-yyyy',
+  templates: arrows
+ });
+
+ // enable clear button for modal demo
+ $('#kt_datepicker_3_modal').datepicker({
+  rtl: KTUtil.isRTL(),
+  todayBtn: "linked",
+  clearBtn: true,
+  todayHighlight: true,
+  templates: arrows
+ });
+
+ // orientation
+ $('#kt_datepicker_4_1').datepicker({
+  rtl: KTUtil.isRTL(),
+  orientation: "top left",
+  todayHighlight: true,
+  templates: arrows
+ });
+
+ $('#kt_datepicker_4_2').datepicker({
+  rtl: KTUtil.isRTL(),
+  orientation: "top right",
+  todayHighlight: true,
+  templates: arrows
+ });
+
+ $('#kt_datepicker_4_3').datepicker({
+  rtl: KTUtil.isRTL(),
+  orientation: "bottom left",
+  todayHighlight: true,
+  templates: arrows
+ });
+
+ $('#kt_datepicker_4_4').datepicker({
+  rtl: KTUtil.isRTL(),
+  orientation: "bottom right",
+  todayHighlight: true,
+  templates: arrows
+ });
+
+ // range picker
+ $('#kt_datepicker_5').datepicker({
+  rtl: KTUtil.isRTL(),
+  todayHighlight: true,
+  templates: arrows
+ });
+
+  // inline picker
+ $('#kt_datepicker_6').datepicker({
+  rtl: KTUtil.isRTL(),
+  todayHighlight: true,
+  templates: arrows
+ });
+}
+
+return {
+ // public functions
+ init: function() {
+  demos();
+ }
+};
+}();
+
+jQuery(document).ready(function() {
+KTBootstrapDatepicker.init();
+});
+     </script>
 </body>
 <!--end::Body-->
 
