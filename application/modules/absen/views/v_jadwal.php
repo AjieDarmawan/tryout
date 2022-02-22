@@ -10,37 +10,13 @@
                     <h5 class="text-dark font-weight-bold my-1 mr-5">Basic Calendar</h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
-                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
-                        <li class="breadcrumb-item text-muted">
-                            <a href="" class="text-muted">Features</a>
-                        </li>
-                        <li class="breadcrumb-item text-muted">
-                            <a href="" class="text-muted">Calendar</a>
-                        </li>
-                        <li class="breadcrumb-item text-muted">
-                            <a href="" class="text-muted">Basic Calendar</a>
-                        </li>
-                    </ul>
+                   
                     <!--end::Breadcrumb-->
                 </div>
                 <!--end::Page Heading-->
             </div>
             <!--end::Info-->
-            <!--begin::Toolbar-->
-            <div class="d-flex align-items-center">
-                <!--begin::Actions-->
-                <a href="#" class="btn btn-light-primary font-weight-bolder btn-sm">Actions</a>
-                <!--end::Actions-->
-                <!--begin::Dropdown-->
-                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
-                    <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                    </a>
-                   
-                </div>
-                <!--end::Dropdown-->
-            </div>
-            <!--end::Toolbar-->
+        
         </div>
     </div>
     <!--end::Subheader-->
