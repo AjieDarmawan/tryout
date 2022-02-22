@@ -127,25 +127,113 @@ class Api extends CI_Controller
         
                         $this->db->insert('absen',$data_insert);
 
+                        $data_array = array(
+                            'status'=>200,
+                            'message'=>"Success",
+                         );
+
                     }else{
 
-                        $data_insert = array(
-                            'id_karyawan'=>$id_kar,
-                          //  'masuk'=>date('Y-m-d H:i:s'),
-                            'pulang'=>date('Y-m-d H:i:s'),
-                            'alasan'=>'',
-                            'ket'=>'',
-                        );
-        
-                        $this->db->update('absen',$data_insert, array('id_absen' => $check_absen->id_absen));
 
+                      $foto = $this->db->query('select * from users  where id_kar ='.$id_kar)->row();
+                    //    echo "<pre>";
+                    //    print_r($foto->image);     
+                    //   die;
+
+    
+                    $Path = './assets/file_upload/images/'.$foto->image;
+                    if (file_exists($Path)){
+                        if (unlink($Path)) {   
+
+                           
+                           
+                            $config['upload_path']          = './assets/file_upload/images/';
+                            $config['allowed_types']        = 'gif|jpg|png';
+                            // $config['max_size']             = 100;
+                            // $config['max_width']            = 1024;
+                            // $config['max_height']           = 768;
+                    
+                            $this->load->library('upload', $config);
+                    
+                            if ( ! $this->upload->do_upload('image')){
+                                $error = array('error' => $this->upload->display_errors());
+        
+                                echo "<pre>";
+                                print_r($error);
+                                //$this->load->view('v_upload', $error);
+                            }else{
+                                $data = array('upload_data' => $this->upload->data());
+        
+                                $data_update = array(
+                                    'image'=>$data['upload_data']['file_name'],
+                                   
+                                );
+            
+            
+                                $this->db->update('users',$data_update,array('id_kar'=>$id_kar));
+                               
+                               $data_insert = array(
+                                'id_karyawan'=>$id_kar,
+                              //  'masuk'=>date('Y-m-d H:i:s'),
+                                'pulang'=>date('Y-m-d H:i:s'),
+                                'alasan'=>'',
+                                'ket'=>'',
+                            );
+            
+                            $this->db->update('absen',$data_insert, array('id_absen' => $check_absen->id_absen));
+        
+                            $data_array = array(
+                                'status'=>200,
+                                'message'=>"Success update",
+                             );
+                            
+                        }
+
+
+
+
+                        } else {
+                            echo "fail";    
+                        }   
+                    } else {
+                        echo "file does not exist";
                     }
+
+                   
+
+
+
+                  
+
+              }
 
                   
 
                 }else{
 
-                    $data_insert = array(
+
+
+                    $config['upload_path']          = './assets/file_upload/images/';
+                    $config['allowed_types']        = 'gif|jpg|png';
+                    // $config['max_size']             = 100;
+                    // $config['max_width']            = 1024;
+                    // $config['max_height']           = 768;
+            
+                    $this->load->library('upload', $config);
+            
+                    if ( ! $this->upload->do_upload('image')){
+                        $error = array('error' => $this->upload->display_errors());
+
+                        echo "<pre>";
+                        print_r($error);
+                        //$this->load->view('v_upload', $error);
+                    }else{
+                        $data = array('upload_data' => $this->upload->data());
+
+                        
+                       // $this->load->view('v_upload_sukses', $data);
+
+                       $data_insert = array(
                         'id_karyawan'=>$id_kar,
                         'masuk'=>date('Y-m-d H:i:s'),
                         'pulang'=>'',
@@ -155,13 +243,33 @@ class Api extends CI_Controller
     
                     $this->db->insert('absen',$data_insert);
 
+
+                    $data_update = array(
+                        'image'=>$data['upload_data']['file_name'],
+                       
+                    );
+
+
+                    $this->db->update('users',$data_update,array('id_kar'=>$id_kar));
+
+                    $data_array = array(
+                        'status'=>200,
+                        'message'=>"Success",
+                     );
+                    
+                
+                }
+
+
+                  
+                   
+
+                   
+
                 }
                 
 
-                $data_array = array(
-                    'status'=>200,
-                    'message'=>"Success",
-                 );
+               
 
 
 
@@ -203,6 +311,7 @@ class Api extends CI_Controller
 
             $lat_tujuan = $kantor->lat;
             $long_tujuan = $kantor->long;
+           
 
         }else if($jadwal->jenis_masuk=='WFH' || $jadwal->jenis_masuk=='M' ||  $jadwal->jenis_masuk=='L'){
 
@@ -248,8 +357,10 @@ class Api extends CI_Controller
             $output = json_decode($result);
 
 
-            // echo "<pre>";
-          //  print_r($output);
+        //     echo "<pre>";
+        //    print_r($output);
+
+        //    die;
           //  echo json_encode($output);
 
             $jarak_skrang = $output->rows[0]->elements[0]->distance->value;
