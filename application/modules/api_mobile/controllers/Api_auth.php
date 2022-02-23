@@ -49,20 +49,5 @@ class Api_auth extends CI_Controller
 
    
 
-    // log the user out
-    public function logout()
-    {
-        $this->session->sess_destroy();
-        redirect('auth', false);
-    }
-
-    function error(){
-        $this->load->view('errors/html/error_404');
-    }
-    function tes(){
-
-        $this->load->view('layouts/template');
-
-    }
-
+  
 }

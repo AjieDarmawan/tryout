@@ -380,10 +380,24 @@
 
                             </tbody>
                             <tfoot>
-
+                            
                             </tfoot>
 
+                           
+
                         </table>
+
+                        <div class="">
+                                  
+                                  <div class="alert alert-primary" >
+                                  <h4><i class="icon fa fa-primary"></i> Keterangan :</h4>
+                                  1. <strong>"Aktifitas Rutin"</strong> (data aktifitas yang sudah tersistem dan sudah memiliki target perdivisi).<br>
+                                  2. <strong>"Aktifitas Lainnya"</strong> (data aktifitas yang belum ada di sistem dan targetnya di tentukan sendiri). <br>
+                                  3. <strong>Tombol Detail</strong> (untuk melihat seluruh aktifitas yang akan dilaporkan perharinya), berserta info jumlah aktifitas.<br>
+                                  4. <strong>Tombol Hapus</strong> (untuk menghapus report), <strong>*ketika report di publish tidak bisa dihapus</strong>.<br>
+                                  5. <strong>Tombol Publish</strong> (untuk menpublish report) <strong>*jika belum dipublish report hanya bisa dilihat oleh karyawan itu sendiri</strong>. Pastikan cheklist sudah berwarna hijau <span class="label label-success"><i class="fa fa-check"></i></span> (Publish)<br>
+                                  </div>
+                          </div>   
 
 
 

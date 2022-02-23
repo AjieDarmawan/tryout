@@ -104,7 +104,7 @@ $sess = $this->session->userdata();
                                     </i>
                                     <span class="menu-text">Master</span>
                                     <span class="menu-label">
-                                        <span class="label label-rounded label-primary">6</span>
+                                        <!-- <span class="label label-rounded label-primary">6</span> -->
                                     </span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -183,7 +183,7 @@ $sess = $this->session->userdata();
                                     </i>
                                     <span class="menu-text">Absensi</span>
                                     <span class="menu-label">
-                                        <span class="label label-rounded label-primary">6</span>
+                                        <!-- <span class="label label-rounded label-primary">6</span> -->
                                     </span>
                                     <i class="menu-arrow"></i>
                                 </a>
