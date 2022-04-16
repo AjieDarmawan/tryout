@@ -164,6 +164,8 @@ class Event extends CI_Controller
         $desc =  $this->input->post('desc');
         $id_kategori = $this->input->post('id_kategori');
 
+        $mode = $this->input->post('mode');
+
 
 
         $data_event = array(
@@ -172,6 +174,7 @@ class Event extends CI_Controller
             'tgl_selesai'=>$tgl_selesai,
             'desc'=>$desc,
             'id_kategori'=>$id_kategori,
+            'mode'=>$mode,
         );
 
 
@@ -222,6 +225,9 @@ class Event extends CI_Controller
 
        $this->db->where('id_event',$id_event);
        $this->db->delete('materi');
+
+       $this->db->where('id_event',$id_event);
+       $this->db->delete('jawaban');
 
        if($peserta){
         $this->db->where('id_event',$id_event);

@@ -167,7 +167,11 @@
                                     echo "<img widht='50' height='50' src='" . $gm_img . "'>";
                                     ?>
                                     <input type="file" name="pertanyaan_img">
+                                    <a href="<?php echo base_url('master/Soal/hapus_img/'.$soal->id.'/'.'1/'.$id_materi)?>" class="btn btn-danger">Hapus</a>
+                           
                                 </div>
+
+                              
                             </div>
 
                             <div class="form-group row">
@@ -288,6 +292,7 @@
                                     echo "<img widht='50' height='50' src='" . $pm_img . "'>";
                                     ?>
                                     <input type="file" name="pembahasan_img">
+                                    <a href="<?php echo base_url('master/Soal/hapus_img/'.$soal->id.'/'.'2/'.$id_materi)?>" class="btn btn-danger">Hapus</a>
                                 </div>
                             </div>
 

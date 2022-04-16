@@ -1357,6 +1357,33 @@ class Soal extends CI_Controller
       }
     }
 
+    function hapus_img($id_soal,$id_t,$materi_id){
+       
+        if($id_t==1){
+            $data_update = array(
+                'pertanyaan_img'=>null,
+            );
+
+            
+          
+        }elseif($id_t==2){
+            $data_update = array(
+                'pembahasan_img'=>null,
+            );
+        }
+
+
+        
+
+        $this->db->where('id',$id_soal);
+        $this->db->update('soalonline',$data_update);
+
+
+        $this->session->set_flashdata('message', "<b>Success <i class='fa fa-check-square-o'></i></b> Tambah data berhasil");  
+
+        redirect('master/soal/index/'.$materi_id);
+    }
+
 
     
     

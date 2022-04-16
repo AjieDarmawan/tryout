@@ -985,11 +985,15 @@ class Materi extends CI_Controller
 
                             // gambar image
                             if($cek_row=='A'){
-                                $img_gambar = "sln-" . $drawing->getCoordinates() . mt_rand(1000, 9999) .'.'. $drawing->getExtension();
-                                $img_gambar_tes[] = $img_gambar;
+                                $img_gambar = "sln-" . $drawing->getCoordinates() .date('Ymd'). mt_rand(1000, 9999) .'.'. $drawing->getExtension();
+                                
+                                $kordinat_img =   str_replace("A","",$drawing->getCoordinates());
+                                $img_gambar_tes[$kordinat_img-2] = $img_gambar;
 
                                 //$kordinat_img[] = $drawing->getCoordinates();
                                 copy($filename, 'assets/file_upload/soalonline/soal/' . $img_gambar);
+
+                                ksort($img_gambar_tes);
 
 
                                // pembasahan
@@ -1007,47 +1011,65 @@ class Materi extends CI_Controller
                             //jawaban a 
                             }elseif($cek_row=='F'){
 
-                                $img_gambar_jawaban_a = "sln-" . $drawing->getCoordinates() . mt_rand(1000, 9999) .'.'. $drawing->getExtension();
-                                $img_gambar_tes_jawaban_a[] = $img_gambar_jawaban_a;
-                                //$kordinat_pembahasan[] = $drawing->getCoordinates();
-                            copy($filename, 'assets/file_upload/soalonline/jawaban_a/' . $img_gambar_jawaban_a);
+                                $img_gambar_jawaban_a = "sln-" . $drawing->getCoordinates() .date('Ymd'). mt_rand(1000, 9999) .'.'. $drawing->getExtension();
+                               // $img_gambar_tes_jawaban_a[] = $img_gambar_jawaban_a;
+                               
+                          
 
-                            
+                                $kordinat_jawaban_a =   str_replace("F","",$drawing->getCoordinates());
+                                $img_gambar_tes_jawaban_a[$kordinat_jawaban_a-2] = $img_gambar_jawaban_a;
+                                copy($filename, 'assets/file_upload/soalonline/jawaban_a/' .date('Ymd'). $img_gambar_jawaban_a);
+                                ksort($img_gambar_tes_jawaban_a);
+
+
                                 //jawaban b
                              }elseif($cek_row=='G'){
 
-                                $img_gambar_jawaban_b = "sln-" . $drawing->getCoordinates() . mt_rand(1000, 9999) .'.'. $drawing->getExtension();
-                                $img_gambar_tes_jawaban_b[] = $img_gambar_jawaban_b;
-                                //$kordinat_pembahasan[] = $drawing->getCoordinates();
-                                copy($filename, 'assets/file_upload/soalonline/jawaban_b/' . $img_gambar_jawaban_b);
-
+                                $img_gambar_jawaban_b = "sln-" . $drawing->getCoordinates() .date('Ymd'). mt_rand(1000, 9999) .'.'. $drawing->getExtension();
+                                
+                                $kordinat_jawaban_b =   str_replace("G","",$drawing->getCoordinates());
+                                $img_gambar_tes_jawaban_b[$kordinat_jawaban_b-2] = $img_gambar_jawaban_b;
                             
+                                copy($filename, 'assets/file_upload/soalonline/jawaban_b/' . $img_gambar_jawaban_b);
+                                ksort($img_gambar_tes_jawaban_b);
 
 
                                 //jawaban c
                             }elseif($cek_row=='H'){
 
-                                $img_gambar_jawaban_c = "sln-" . $drawing->getCoordinates() . mt_rand(1000, 9999) .'.'. $drawing->getExtension();
-                                $img_gambar_tes_jawaban_c[] = $img_gambar_jawaban_c;
-                                //$kordinat_pembahasan[] = $drawing->getCoordinates();
-                                copy($filename, 'assets/file_upload/soalonline/jawaban_c/' . $img_gambar_jawaban_c);
+                                $img_gambar_jawaban_c = "sln-" . $drawing->getCoordinates() .date('Ymd'). mt_rand(1000, 9999) .'.'. $drawing->getExtension();
+                               // $img_gambar_tes_jawaban_c[] = $img_gambar_jawaban_c;
+                               
+                               $kordinat_jawaban_c =   str_replace("H","",$drawing->getCoordinates());
+                               $img_gambar_tes_jawaban_c[$kordinat_jawaban_c-2] = $img_gambar_jawaban_c;
 
+                                copy($filename, 'assets/file_upload/soalonline/jawaban_c/' . $img_gambar_jawaban_c);
+                                ksort($img_gambar_tes_jawaban_c);
                                  //jawaban d
                             }elseif($cek_row=='I'){
 
-                                $img_gambar_jawaban_d = "sln-" . $drawing->getCoordinates() . mt_rand(1000, 9999) .'.'. $drawing->getExtension();
-                                $img_gambar_tes_jawaban_d[] = $img_gambar_jawaban_d;
-                                //$kordinat_pembahasan[] = $drawing->getCoordinates();
-                                copy($filename, 'assets/file_upload/soalonline/jawaban_d/' . $img_gambar_jawaban_d);
+                                $img_gambar_jawaban_d = "sln-" . $drawing->getCoordinates() .date('Ymd'). mt_rand(1000, 9999) .'.'. $drawing->getExtension();
+                               // $img_gambar_tes_jawaban_d[] = $img_gambar_jawaban_d;
 
+                               $kordinat_jawaban_d =   str_replace("I","",$drawing->getCoordinates());
+                               $img_gambar_tes_jawaban_d[$kordinat_jawaban_d-2] = $img_gambar_jawaban_d;
+
+                               
+                                copy($filename, 'assets/file_upload/soalonline/jawaban_d/' . $img_gambar_jawaban_d);
+                                ksort($img_gambar_tes_jawaban_d);
                                  //jawaban e
                             }elseif($cek_row=='J'){
 
-                                $img_gambar_jawaban_e = "sln-" . $drawing->getCoordinates() . mt_rand(1000, 9999) .'.'. $drawing->getExtension();
-                                $img_gambar_tes_jawaban_e[] = $img_gambar_jawaban_e;
-                                //$kordinat_pembahasan[] = $drawing->getCoordinates();
-                                copy($filename, 'assets/file_upload/soalonline/jawaban_e/' . $img_gambar_jawaban_e);
+                                $img_gambar_jawaban_e = "sln-" . $drawing->getCoordinates() .date('Ymd'). mt_rand(1000, 9999) .'.'. $drawing->getExtension();
+                               // $img_gambar_tes_jawaban_e[] = $img_gambar_jawaban_e;
+                               
+                               $kordinat_jawaban_e =   str_replace("J","",$drawing->getCoordinates());
+                               $img_gambar_tes_jawaban_e[$kordinat_jawaban_e-2] = $img_gambar_jawaban_e;
 
+
+
+                                copy($filename, 'assets/file_upload/soalonline/jawaban_e/' . $img_gambar_jawaban_e);
+                                ksort($img_gambar_tes_jawaban_e);
                             }
 
     
@@ -1201,32 +1223,49 @@ class Materi extends CI_Controller
 
         //   echo "tes";
 
-        //   echo "<pre>";
-        //   print_r($data_image_pembahasan);
 
-        //   die;
+       
+
+          echo "<pre>";
+          print_r($data_image);
+
+         // die;
 
 
           //jawaban_a
 
         
           $no=0;
-          $kosong_a = 0;
+          $kosong_a = -1;
           foreach($rowData as $c => $key){
+
+            $no_a = $kosong_a++;
+
+                // echo "<pre>";
+                // print_r($key);
+
                 if($key[0][5]!='pilihan A'){
+
                     if($key[0][5]==null){
-                        $a =   $img_gambar_tes_jawaban_a[$kosong_a++];
+
+                      //  echo "tes";
+                        $a =   $img_gambar_tes_jawaban_a[$no_a];
                     }else{
                         $a = "";
                     }
                   $data_image_jawaban_a[$key[0][3]] = array(
+                      'id'=>$no_a,
                       'img_jawaban_a'=>$a,
                       'pertanyaan_img_jawaban_a'=>$key[0][5],
                       'pertanyaan'=>$key[0][3],
+                      'tes'=>$img_gambar_tes_jawaban_a[$no_a],
                       //'no'=>$kosong,
                   );
                 }   
           }
+
+
+         
 
           //jawaban b
           $no=0;

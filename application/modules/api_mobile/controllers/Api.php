@@ -248,9 +248,10 @@ class Api extends CI_Controller
 
 
     function event(){
-    //    echo base64_encode("20");
-    //    // echo base64_encode("nonlogin@edunitas.com");
-    //     die;
+       echo base64_encode("1348");
+       echo "<br>";
+       echo base64_encode("refaaryani11@gmail.com");
+        die;
 
         error_reporting(0);
         $sql = $this->db->query("select e.*,j.kategori_nama,j.id_kategori from event as e 
@@ -261,9 +262,7 @@ class Api extends CI_Controller
 
          $hariini = date('Y-m-d');
 
-        // echo "<pre>";
-        // print_r($sql);
-        //  die;
+      
 
         //$hariini = '2022-03-06';
 
@@ -272,12 +271,14 @@ class Api extends CI_Controller
 
             if($hariini >= $s->tgl_mulai){
 
+              
+
                 
 
                    //jika hari ini kurang dari tgl selesai
                     if($s->tgl_selesai >= $hariini){
 
-
+                       
 
                         $waktu = $this->db->query("select waktu,materi_id from materi where publish = 1 and publish=1 and  id_event = ".$s->id_event)->result();
                         $kategori = $this->db->query("select kategori_nama from kategori where id_kategori = ".$s->id_kategori)->row();
@@ -310,8 +311,10 @@ class Api extends CI_Controller
                     }
 
                 // echo "<pre>";
-                // print_r($soal);
+                // print_r($sql);
                 // die;
+
+                
 
                     if($jumlah_soal!=0){
                         $data_api[] = array(
@@ -348,6 +351,173 @@ class Api extends CI_Controller
 
         
     }
+
+
+
+
+    function event_akan_datang()
+    {
+
+        error_reporting(0);
+        header('Access-Control-Allow-Origin: *');
+        // header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+        header('Content-Type: application/json');
+
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Cache-Control, Pragma, Authorization, Accept, Accept-Encoding");
+
+
+
+
+        $sql = $this->db->query("select e.*,j.kategori_nama,j.id_kategori from event as e 
+        inner JOIN kategori as j on e.id_kategori=j.id_kategori
+                where  e.mode='event'")->result();
+
+
+        $hariini = date('Y-m-d');
+
+        //$hariini = '2022-04-12';
+
+        foreach ($sql as $key => $s) {
+
+
+
+
+
+            // $waktu = $this->db->query("select waktu,materi_id from materi where publish = 1 and id_event = ".$s->id_event)->result();
+            // $kategori = $this->db->query("select kategori_nama from kategori where id_kategori = ".$s->id_kategori)->row();
+
+
+
+
+            // $wak = 0;
+            // foreach($waktu as $w){
+
+            //     $soal[] = $this->db->query("select * from soalonline where materi_id = ".$w->materi_id)->result();
+            //     // $jumlah_soal = 0;
+            //     // foreach($soal as $so){
+            //     //     $jumlah_soal += count($soal);
+            //     // }
+
+            //     $wak += $w->waktu;
+            // }
+
+            // $j_soal = 0;
+            // foreach($soal as $k){
+            //     $j_soal += count($k);
+            // }
+
+
+
+            if ($hariini < $s->tgl_mulai) {
+
+                //jika hari ini kurang dari tgl selesai
+                if ($s->tgl_selesai >= $hariini) {
+
+                    $waktu = $this->db->query("select waktu,materi_id from materi where publish = 1 and id_event = " . $s->id_event)->result();
+                    $kategori = $this->db->query("select kategori_nama from kategori where id_kategori = " . $s->id_kategori)->row();
+
+
+
+                    // $soal = $this->db->query("select * from soalonline where materi_id = ".$s->materi_id)->result();
+
+
+
+
+                    $wak = 0;
+                    foreach ($waktu as $w) {
+
+                        $soal[$s->id_event][] = $this->db->query("select * from soalonline where materi_id = " . $w->materi_id)->result();
+
+
+                        $wak += $w->waktu;
+                    }
+
+                    $jumlah_soal = 0;
+                    foreach ($soal[$s->id_event] as $so) {
+
+                        // echo "<pre>";
+                        //     print_r($so);
+
+                        foreach ($so as $sk) {
+                            $jumlah_soal += 1;
+                        }
+                    }
+
+                    if ($jumlah_soal != 0) {
+                        $data_api[] = array(
+                            "id_event" => base64_encode($s->id_event),
+                            "judul" => $s->judul,
+                            "tgl_mulai" => TanggalIndo($s->tgl_mulai),
+                            "tgl_selesai" => TanggalIndo($s->tgl_selesai),
+                            "desc" => $s->desc,
+                            "img" => $s->img,
+                            "status" => $s->status,
+                            "mode" => $s->mode,
+                            // "materi_id" => $s->materi_id,
+                            // "materi_nama"=> $s->materi_nama,
+                            // "id_jurusan"=> $s->id_jurusan,
+                            "waktu" => $wak,
+                            //"jurusan"=>$jurusan->jurusan_nama,
+                            'jenis' => $s->jenis_nama,
+                            'kategori' => $kategori->kategori_nama,
+                            'jumlah_soal' => $jumlah_soal,
+                        );
+                    }
+                }
+            }
+        }
+
+        if ($data_api) {
+
+            $data_api_sukses = array(
+                'status' => 200,
+                'message' => "sukses",
+                'datanya' => $data_api
+            );
+            echo json_encode($data_api_sukses);
+
+            // echo json_encode($data_api);
+        } else {
+            $data_api_error = array(
+                'status' => 400,
+                'message' => "data kosong",
+            );
+            echo json_encode($data_api_error);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     function latihan(){
@@ -715,8 +885,20 @@ class Api extends CI_Controller
             $output = json_decode($result);
 
             // echo "<pre>";
-            // print_r($output);
+            // print_r($output->nama);
             // die;
+
+            if($output->status==200){
+                $data_log_login = array(
+                    'email'=>$email,
+                    'last_login'=>date('Y-m-d H:i:s'),
+                    'device_id'=>'',
+                    'nama'=>$output->nama,
+                    'sekolah'=>$output->nama_sekolah,
+                    'leveledu'=>$output->leveledu,
+                );
+                $this->db->insert('log_login',$data_log_login);
+            }
 
             echo json_encode($output);
     }
@@ -1093,7 +1275,7 @@ class Api extends CI_Controller
 
 
         foreach($materi as $m){
-            $soal = $this->db->query('select * from soalonline where materi_id = "'.$m['materi_id'].'"  ORDER BY RAND()')->result_array();
+            $soal = $this->db->query('select * from soalonline where materi_id = "'.$m['materi_id'].'"  ')->result_array();
 
             
             foreach($soal as $s){
@@ -1463,9 +1645,11 @@ class Api extends CI_Controller
 
      function pembahasan(){
 
+     
+
         error_reporting(0);
         $id_event = 8;
-        $email = 'tes';
+        $email = 'ajie';
 
        $materi =  $this->db->query('select * from materi where publish = 1 and id_event =  "'.$id_event.'"')->result();
 
@@ -1479,6 +1663,11 @@ class Api extends CI_Controller
 
           
            foreach($soal[$m->materi_id] as $k =>$key){
+
+            // echo "tes";
+
+            echo "<pre>";
+            print_r($key);
 
             $pilihan = json_decode($key->pilihan);
 
@@ -1530,9 +1719,10 @@ class Api extends CI_Controller
 
              $a = $this->objToArray(json_decode($jawaban_skor[$key->materi_id]->jawaban, true));
 
-
+            
              if($key->id==$a['ans_'.$key->id]['soal']){
 
+              
                 //  $Path = './assets/file_upload/soalonline/'.$s['img'];
                $Path_img = base_url("assets/file_upload/soalonline/soal/".$key->img);
 
@@ -1580,7 +1770,7 @@ class Api extends CI_Controller
                     'img' => $Path2,
   
                     'jawaban' => $key->jawaban,
-                    'pilihan' => $pil,
+                    'pilihan' => $pil[$key->id],
                     
                    
                     'pembahasan' => $key->pembahasan,
@@ -1597,12 +1787,12 @@ class Api extends CI_Controller
 
 
            $data_api[] = array(
-            $m->materi_id=>$data_data[$m->materi_id],
-               
-           );
-       }
+            $m->materi_id => $data_data[$m->materi_id],
 
-       echo json_encode($data_api);
+        );
+    }
+
+    echo json_encode($data_api);
 
 
 
@@ -2379,6 +2569,160 @@ class Api extends CI_Controller
 
         
     }
+
+
+    function pembahasan_random(){
+
+     
+
+        error_reporting(0);
+        $id_event = 8;
+        $email = 'ajie';
+
+       $materi =  $this->db->query('select * from materi where publish = 1 and id_event =  "'.$id_event.'"')->result();
+
+    //    echo "<pre>";
+    //    print_r($materi);
+       foreach($materi as $m){
+
+      
+           $jawaban[] =  $this->db->query('select * from jawaban where materi_id =  "'.$m->materi_id.'"  and email="'.$email.'" order by materi_id desc')->row();
+
+        //    $soal[$m->materi_id] =  $this->db->query('select * from soalonline where materi_id =  "'.$m->materi_id.'" order by materi_id desc')->result();
+           $jawaban_skor[$m->materi_id] =  $this->db->query('select * from jawaban where materi_id =  "'.$m->materi_id.'"  and email="'.$email.'"')->result();
+
+           echo "<pre>";
+           print_r($jawaban_skor);
+           die;
+           foreach($jawaban_skor[$m->materi_id] as $k =>$key){
+
+            
+
+                 $soal_3 =  $this->db->query('select * from soalonline where materi_id =  "'.$key->materi_id.'" ')->result();
+           
+              
+
+                 $a = $this->objToArray(json_decode($key->jawaban, true));
+
+                $pilihan = json_decode($soal_3[$k]->pilihan);
+
+                
+
+                foreach($pilihan as $pi){
+
+                 
+
+                    if($pi->code=='1'){
+                        $folder_jawaban = 'jawaban_a';
+                        $nama_file_jawaban = $pi->name;
+                    }elseif($pi->code=='2'){
+                        $folder_jawaban = 'jawaban_b';
+                        $nama_file_jawaban = $pi->name;
+                    }elseif($pi->code=='3'){
+                        $folder_jawaban = 'jawaban_c'; 
+                        $nama_file_jawaban = $pi->name;   
+                    }elseif($pi->code=='4'){
+                        $folder_jawaban = 'jawaban_d';
+                        $nama_file_jawaban = $pi->name;
+                    }elseif($pi->code=='5'){
+                        $folder_jawaban = 'jawaban_e';
+                        $nama_file_jawaban = $pi->name;
+                    }
+
+                    $Path_img_jawaban = base_url("assets/file_upload/soalonline/".$folder_jawaban."/".$nama_file_jawaban);
+                    $Path_jawaban = FCPATH.'assets/file_upload/soalonline/'.$folder_jawaban."/".$nama_file_jawaban;
+                 
+                if($nama_file_jawaban){
+                     if (file_exists($Path_jawaban) ){
+                        $Path2_jawaban = $Path_img_jawaban;   
+                        $type = 'gambar';
+                    }else{
+                        $Path2_jawaban =  $pi->name;
+                        $type = 'text';
+                    }
+                }else{
+                        $Path2_jawaban =  $pi->name;
+                        $type = 'text';
+                }
+                   
+
+
+                    $pil[$soal_3[$k]->id][] = array(
+                        'code'=>$pi->code,
+                        'name'=>$Path2_jawaban,
+                        'type'=>$type,
+                    );
+                }
+
+               
+
+                 if($soal_3[$k]->id==$a['ans_'.$soal_3[$k]->id]['soal']){
+
+                  
+                    
+
+                    $Path_img = base_url("assets/file_upload/soalonline/soal/".$soal_3[$k]->img);
+
+                    $Path = FCPATH.'assets/file_upload/soalonline/soal/'.$soal_3[$k]->img;
+        
+                     if (file_exists($Path) ){
+                         $Path1 = $soal_3[$k]->img;   
+                             if($Path1){
+                                 $Path2 = $Path_img;
+                             }else{
+                                 $Path2 = "";
+                             }
+                     }else{
+                         $Path2 = "";
+                     }
+     
+     
+                     // pembahasan
+                     $Path_pembahasan_img = base_url("assets/file_upload/soalonline/pembahasan/".$soal_3[$k]->pembahasan_img);
+     
+                    $Path = FCPATH.'assets/file_upload/soalonline/pembahasan/'.$soal_3[$k]->pembahasan_img;
+        
+                     if (file_exists($Path) ){
+                         $Path1_pembahasan_img = $soal_3[$k]->pembahasan_img;   
+                             if($Path1_pembahasan_img){
+                                 $Path2_pembahasan_img = $Path_pembahasan_img;
+                             }else{
+                                 $Path2_pembahasan_img = "";
+                             }
+                     }else{
+                         $Path2_pembahasan_img = "";
+                     }
+     
+                     $data_data[$key->materi_id][] = array(
+                         'id' => $a['ans_'.$soal_3[$k]->id]['soal'],
+                         'materi_id' => $soal_3[$k]->materi_id,
+                         'materi_nama' => $m->materi_nama,
+                         'pertanyaan' => $soal_3[$k]->pertanyaan,
+                         'img' => $Path2,
+                         'jawaban' => $soal_3[$k]->jawaban,
+                         'pilihan' => $pil[$soal_3[$k]->id],
+                         'pembahasan' => $soal_3[$k]->pembahasan,
+                         'pembahasan_img'=>$Path2_pembahasan_img,
+                         'jawaban_anda'=>$a['ans_'.$soal_3[$k]->id]['jawaban'],
+                   );
+
+                  
+            }
+        
+                }
+
+                $data_api[] = array(
+                    $m->materi_id => $data_data[$m->materi_id],
+        
+                );
+
+            }
+
+
+            echo json_encode($data_data);
+
+
+     }
 
     
 

@@ -94,7 +94,7 @@
                             <div class="form-group row">
                                 <label class="col-2 col-form-label">Mode</label>
                                 <div class="col-10">
-                                     <select class="form-control" name="status">
+                                     <select class="form-control" name="mode">
                                          <option value="">--PILIH--</option>
                                          <option value="event" <?php  if($event->mode=="event"){echo "selected";}?>>Event</option>
                                          <option value="latihan" <?php  if($event->mode=="latihan"){echo "selected";}?>>Latihan</option>
