@@ -5,7 +5,7 @@
     ?>
 
 <center><h3> Aktivitas Login Harian </h3><center>
-      <table id="example" class="display nowrap table-striped table-bordered table" style="width:100%">
+      <table  class="display nowrap table-striped table-bordered table" style="width:100%">
               <caption class="text-center"><br>
                </caption>
                 <thead>

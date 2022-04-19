@@ -193,6 +193,156 @@ function ubahkotak($str)
     }
 
 
+     function event_akan_datang()
+    {
+
+        error_reporting(0);
+        header('Access-Control-Allow-Origin: *');
+        // header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+        header('Content-Type: application/json');
+
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Cache-Control, Pragma, Authorization, Accept, Accept-Encoding");
+
+
+
+
+        $sql = $this->db->query("select e.*,j.kategori_nama,j.id_kategori from event as e 
+        inner JOIN kategori as j on e.id_kategori=j.id_kategori
+                where  e.mode='event'")->result();
+
+
+        $hariini = date('Y-m-d');
+
+        //$hariini = '2022-03-06';
+
+        foreach ($sql as $key => $s) {
+
+
+
+
+
+            // $waktu = $this->db->query("select waktu,materi_id from materi where publish = 1 and id_event = ".$s->id_event)->result();
+            // $kategori = $this->db->query("select kategori_nama from kategori where id_kategori = ".$s->id_kategori)->row();
+
+
+
+
+            // $wak = 0;
+            // foreach($waktu as $w){
+
+            //     $soal[] = $this->db->query("select * from soalonline where materi_id = ".$w->materi_id)->result();
+            //     // $jumlah_soal = 0;
+            //     // foreach($soal as $so){
+            //     //     $jumlah_soal += count($soal);
+            //     // }
+
+            //     $wak += $w->waktu;
+            // }
+
+            // $j_soal = 0;
+            // foreach($soal as $k){
+            //     $j_soal += count($k);
+            // }
+
+
+
+            if ($hariini < $s->tgl_mulai) {
+
+                //jika hari ini kurang dari tgl selesai
+                if ($s->tgl_selesai >= $hariini) {
+
+                    $waktu = $this->db->query("select waktu,materi_id from materi where publish = 1 and id_event = " . $s->id_event)->result();
+                    $kategori = $this->db->query("select kategori_nama from kategori where id_kategori = " . $s->id_kategori)->row();
+
+
+
+                    // $soal = $this->db->query("select * from soalonline where materi_id = ".$s->materi_id)->result();
+
+
+
+
+                    $wak = 0;
+                    foreach ($waktu as $w) {
+
+                        $soal[$s->id_event][] = $this->db->query("select * from soalonline where materi_id = " . $w->materi_id)->result();
+
+
+                        $wak += $w->waktu;
+                    }
+
+                    $jumlah_soal = 0;
+                    foreach ($soal[$s->id_event] as $so) {
+
+                        // echo "<pre>";
+                        //     print_r($so);
+
+                        foreach ($so as $sk) {
+                            $jumlah_soal += 1;
+                        }
+                    }
+
+                    if ($jumlah_soal != 0) {
+                        $data_api[] = array(
+                            "id_event" => base64_encode($s->id_event),
+                            "judul" => $s->judul,
+                            "tgl_mulai" => TanggalIndo($s->tgl_mulai),
+                            "tgl_selesai" => TanggalIndo($s->tgl_selesai),
+                            "desc" => $s->desc,
+                            "img" => $s->img,
+                            "status" => $s->status,
+                            "mode" => $s->mode,
+                            // "materi_id" => $s->materi_id,
+                            // "materi_nama"=> $s->materi_nama,
+                            // "id_jurusan"=> $s->id_jurusan,
+                            "waktu" => $wak,
+                            //"jurusan"=>$jurusan->jurusan_nama,
+                            'jenis' => $s->jenis_nama,
+                            'kategori' => $kategori->kategori_nama,
+                            'jumlah_soal' => $jumlah_soal,
+                        );
+                    }
+                }
+            }
+        }
+
+        if ($data_api) {
+
+            $data_api_sukses = array(
+                'status' => 200,
+                'message' => "sukses",
+                'datanya' => $data_api
+            );
+            echo json_encode($data_api_sukses);
+
+            // echo json_encode($data_api);
+        } else {
+
+            $data_error[] = array(
+            "id_event"=> "MzA=",
+            "judul"=> "Pekan I - Try Out",
+            "tgl_mulai"=> "09 April 2022",
+            "tgl_selesai"=> "10 April 2022",
+            "desc"=> "Soal Soshum Final",
+            "img"=> null,
+            "status"=> null,
+            "mode"=> "event",
+            "waktu"=> 197,
+            "jenis"=> null,
+            "kategori"=> "SOSHUM",
+            "jumlah_soal"=> 139
+);
+            $data_api_error = array(
+                'status' => 400,
+                'message' => "data kosong",
+                'datanya' => $data_error,
+            );
+            echo json_encode($data_api_error);
+        }
+    }
+
+
+
 
     function event()
     {
@@ -318,9 +468,25 @@ function ubahkotak($str)
 
             // echo json_encode($data_api);
         } else {
+
+            $data_error[] = array(
+            "id_event"=> "MzA=",
+            "judul"=> "Pekan I - Try Out",
+            "tgl_mulai"=> "09 April 2022",
+            "tgl_selesai"=> "10 April 2022",
+            "desc"=> "Soal Soshum Final",
+            "img"=> null,
+            "status"=> null,
+            "mode"=> "event",
+            "waktu"=> 197,
+            "jenis"=> null,
+            "kategori"=> "SOSHUM",
+            "jumlah_soal"=> 139
+);
             $data_api_error = array(
                 'status' => 400,
                 'message' => "data kosong",
+                'datanya' => $data_error,
             );
             echo json_encode($data_api_error);
         }
@@ -648,10 +814,10 @@ function ubahkotak($str)
         echo json_encode($data);
     }
 
-    function soal($materi_id)
+    function soal($materi_id2)
     {
 
-        $materi_id2 = base64_decode($materi_id);
+        //$materi_id2 = base64_decode($materi_id);
 
 
         $materi_ = $this->db->query('select * from materi where publish = 1 and materi_id = "' . $materi_id2 . '"')->row();
@@ -1091,6 +1257,1056 @@ function ubahkotak($str)
             echo json_encode($output);
 
     }
+
+
+     function jawaban_event()
+    {
+
+      
+
+
+
+        $email = $this->input->post('email');
+        $data_array2 = $this->input->post('res');
+        $tgl_mulai = $this->input->post('tgl_mulai');
+        $id_peserta = $this->input->post('id_peserta');
+
+
+
+
+        // echo "<pre>";
+        // print_r($data_array2);
+        // die;
+
+
+       
+        $data_array = $this->objToArray(json_decode($data_array2, true));
+
+
+
+         
+
+        $total_nilai_perevent = 0;
+        foreach ($data_array['datanya'] as  $a) {
+
+            // echo "<pre>";
+            // print_r($a['materi_id']);
+            // die;
+
+            $sql_soal = $this->db->query('select * from soalonline where materi_id = ' . base64_decode($a['materi_id']))->result();
+
+
+            // echo "<pre>";
+            //       print_r($sql_soal);
+            //       die;
+
+
+            $total_nilai = 0;
+
+            $benar = 0;
+            $salah = 0;
+            $kosong = 0;
+            foreach ($sql_soal as $s => $key) {
+
+
+
+
+
+                if ($key->id == $a['ans_' . $key->id]['soal']) {
+
+                    //hitung benar
+
+                    if ($key->jawaban == $a['ans_' . $key->id]['jawaban']) {
+                        $total_nilai +=  4;
+                        $benar += 1;
+
+                        //  echo "benar";
+                    } elseif ($a['ans_' . $key->id]['jawaban'] == 0) {
+                        //ga di isi 
+                        $total_nilai +=  0;
+                        $kosong += 1;
+                        //  echo "ga disi";
+                    } else {
+
+                        // echo "salah";
+
+                        //salah
+                        $total_nilai +=   -1;
+                        $salah = 1;
+                    }
+                }
+
+                $cari_user = $this->db->query('select * from jawaban where email="' . $email . '" and materi_id="' . $key->materi_id . '"')->row();
+
+                if ($cari_user) {
+                    $mode = 3;
+                } else {
+                    $mode = 1;
+                }
+            }
+
+            // if($total_nilai<=0){
+            //     $total_nilai2 = 0;
+            // }else{
+            //     $total_nilai2 = $total_nilai;
+            // }
+
+
+        //     echo "<pre>";
+        // // print_r($a);
+        //     echo json_encode($a);
+        // die;
+
+            $data_jawaban = array(
+                'materi_id' => base64_decode($a['materi_id']),
+                'jawaban' => json_encode($a),
+                //'jawaban'=>$data_array,
+                'skor' => $total_nilai,
+                'create_add' => date('Y-m-d H:i:s'),
+                'email' => $email,
+                'id_event' => base64_decode($data_array['event']),
+                'tgl_mulai' => $tgl_mulai,
+                'mode' => $mode,
+                'benar' => $benar,
+                'kosong' => $kosong,
+                'salah' => $salah,
+                'id_peserta' => $id_peserta,
+            );
+
+            $q = $this->db->insert('jawaban', $data_jawaban);
+
+            $total_nilai_perevent += $total_nilai;
+        }
+
+
+        // echo "<pre>";
+        // print_r($data_jawaban);
+        //die;
+
+
+        if ($q) {
+            $data_api = array(
+                'status' => 200,
+                'message' => 'suksess',
+                'skor' => $total_nilai_perevent,
+            );
+
+            echo json_encode($data_api);
+        }
+    }
+
+
+
+    function jawaban()
+    {
+        header('Content-type: application/json');
+        // {
+        //     "ccid":"N0E9PQb93bbfb93bbf",
+        //     "ans_Nnc9PQb93bbfb93bbf":{
+        //         "ans":"633",
+        //         "time":""
+        //     },
+        //     "ans_NkE9PQb93bbfb93bbf":{
+        //         "ans":"4233",
+        //         "time":""
+        //     },
+        //     "ans_NlE9PQb93bbfb93bbf":{
+        //         "ans":"4254",
+        //         "time":""
+        //     }
+        // }
+
+
+
+        // $data_array =array(
+        //     'ccid'=>"N0E9PQb93bbfb93bbf",
+        //     'ans_Nnc9PQb93bbfb93bbf'=>array(
+        //         "ans"=>"633",
+        //         "time"=>""
+        //     ),
+        //     'ans_Nnc9PQb93bbfb93bbf'=>array(
+        //         "ans"=>"633",
+        //         "time"=>""
+        //     ),
+        //     'ans_Nnc9PQb93bbfb93bbf'=>array(
+        //         "ans"=>"633",
+        //         "time"=>""
+        //     ),
+        // );
+
+
+        $email = $this->input->post('email');
+        $tgl_mulai = $this->input->post('tgl_mulai');
+        $data_array2 = $this->input->post('res');
+
+        $id_peserta = $this->input->post('id_peserta');
+
+
+        //       $data_array2 = $_POST;
+
+        // echo "<pre>";
+        // print_r($data_array2);
+        // die;
+
+        $data_array =  (array)json_decode($data_array2);
+
+
+
+        //  $data_array =array(
+        //      'materi_id'=>"22",
+        //      'jawabannya'=>array(
+        //       array(
+        //          'soal'=>192,
+        //          'jawaban'=>'5'
+        //      ),
+        //      array(
+        //          'soal'=>191,
+        //          'jawaban'=>'2'
+        //      ),
+        //      array(
+        //          'soal'=>190,
+        //          'jawaban'=>'3'
+        //      ),
+        //      array(
+        //          'soal'=>189,
+        //          'jawaban'=>'4'
+        //      ),
+
+        //   )
+        //  );
+
+        //echo json_encode($data_array);
+        // echo "<pre>";
+        // print_r($data_array);
+        // die;
+
+
+        $sql_soal = $this->db->query('select * from soalonline where materi_id = ' . $data_array['materi_id'])->result();
+
+        $event = $this->db->query('select id_event from materi where publish = 1 and materi_id = ' . $data_array['materi_id'])->row();
+
+
+
+        //    echo "<pre>";
+        //    print_r($event);
+
+        //    die;
+
+
+        $total_nilai = 0;
+        $benar = 0;
+        $salah = 0;
+        $kosong = 0;
+        foreach ($sql_soal as $s => $key) {
+
+
+
+
+
+            if ($key->id == $data_array['ans_' . $key->id]->soal) {
+
+                //hitung benar
+
+                if ($key->jawaban == $data_array['ans_' . $key->id]->jawaban) {
+                    $total_nilai +=  4;
+                    $benar += 1;
+
+                    //  echo "benar";
+                } elseif ($data_array['ans_' . $key->id]->jawaban == 0) {
+                    //ga di isi 
+                    $total_nilai +=  0;
+                    $kosong += 1;
+                    //  echo "ga disi";
+                } else {
+
+                    // echo "salah";
+
+                    //salah
+                    $total_nilai +=   -1;
+                    $salah += 1;
+                }
+            }
+        }
+
+
+        // if($total_nilai<=0){
+        //       $total_nilai2 = 0;
+        //   }else{
+        //       $total_nilai2 = $total_nilai;
+        //   }
+        $data_jawaban = array(
+            'materi_id' => $data_array['materi_id'],
+            'jawaban' => json_encode($data_array),
+            //'jawaban'=>$data_array,
+            'skor' => $total_nilai,
+            'create_add' => date('Y-m-d H:i:s'),
+            'email' => $email,
+            'id_event' => $event->id_event,
+            'tgl_mulai' => $tgl_mulai,
+            'mode' => 2,
+            'benar' => $benar,
+            'salah' => $salah,
+            'kosong' => $kosong,
+            // 'id_peserta'=>$id_peserta,
+        );
+
+        $q = $this->db->insert('jawaban', $data_jawaban);
+
+        $id_jawaban_h = $this->db->insert_id();
+
+
+        if ($q) {
+            $data_api = array(
+                'status' => 200,
+                'message' => 'suksess',
+                'skor' => $total_nilai,
+                'id_jawaban' => $id_jawaban_h,
+            );
+        }
+
+        echo json_encode($data_api);
+    }
+
+
+    function cari_nilai()
+    {
+
+
+        $id_event2 = $this->input->post('id_event');
+
+        $id_peserta = $this->input->post('id_peserta');
+
+        $id_event = base64_decode($id_event2);
+        $email = $this->input->post('email');
+
+         $event =  $this->db->query('select * from event where id_event =  "' . $id_event . '"')->row();
+
+        $materi =  $this->db->query('select * from materi where publish = 1 and id_event =  "' . $id_event . '"')->result();
+
+
+        foreach ($materi as $m) {
+
+            // print_r($m->materi_id);
+            $jawaban[] =  $this->db->query('select * from jawaban where id_peserta = "' . $id_peserta . '" and materi_id =  "' . $m->materi_id . '"  and email="' . $email . '" order by materi_id desc')->row();
+
+            $soal[$m->materi_id] =  $this->db->query('select * from soalonline where materi_id =  "' . $m->materi_id . '" order by materi_id desc')->result();
+
+
+            $jawaban_skor[$m->materi_id] =  $this->db->query('select * from jawaban where id_peserta = "' . $id_peserta . '" and  materi_id =  "' . $m->materi_id . '"  and email="' . $email . '" order by materi_id desc')->row();
+
+
+
+
+
+            // echo "<pre>";
+            // print_r($soal);
+
+            foreach ($soal[$m->materi_id] as  $key) {
+                $key1[] = $key;
+            }
+        }
+
+
+
+
+
+        // echo "<pre>";
+        // print_r($key1);
+
+        // die;
+
+        $benar = 0;
+        $salah = 0;
+        $kosong = 0;
+        $skor_benar = 0;
+        $skor_salah = 0;
+        $skor_gadisi = 0;
+
+        foreach ($key1 as $key) {
+            $a = $this->objToArray(json_decode($jawaban_skor[$key->materi_id]->jawaban, true));
+
+
+            if ($key->id == $a['ans_' . $key->id]['soal']) {
+
+                //hitung benar
+
+                // echo $key->id;
+                // die;
+
+                if ($key->jawaban == $a['ans_' . $key->id]['jawaban']) {
+                    $benar +=  1;
+                    $skor_benar += 4;
+
+
+                    //  echo "benar";
+                } elseif ($a['ans_' . $key->id]['jawaban'] == 0) {
+                    //ga di isi 
+                    $kosong +=  1;
+                    $skor_gadisi += 0;
+
+                    //  echo "ga disi";
+                } else {
+
+                    // echo "salah";
+
+                    //salah
+                    $skor_salah +=   -1;
+                    $salah +=  1;
+                }
+            }
+        }
+
+
+        //die;
+
+        //error_reporting(0);
+
+
+
+        //  echo "<pre>";
+        // print_r($soal);
+
+        // // echo "<pre>";
+        // // print_r($a);
+        // die;
+
+        // $skor = 0;
+        // foreach($jawaban as $j){
+        //     $skor += $j->skor;
+        // }
+
+        $hasil_hasil_nilai = $skor_benar + $skor_gadisi + $skor_salah;
+
+        if ($hasil_hasil_nilai <= 0) {
+            $hasil_hasil_nilai2 = 0;
+        } else {
+            $hasil_hasil_nilai2 = $hasil_hasil_nilai;
+        }
+
+        $data_api = array(
+            'tgl_mulai'=>$event->tgl_mulai,
+            'tgl_selesai'=>$event->tgl_selesai,
+            'skor' => $hasil_hasil_nilai,
+
+            'skor_benar' => $skor_benar,
+            'skor_gadisi' => $skor_gadisi,
+            'skor_salah' => $skor_salah,
+
+
+            'benar' => $benar,
+            'kosong' => $kosong,
+            'salah' => $salah,
+
+            'totalsoal' => count($key1),
+        );
+
+        echo json_encode($data_api);
+    }
+
+
+    function pembahasan()
+    {
+
+        error_reporting(0);
+        $id_event2 = $this->input->post('id_event');
+        $id_peserta = $this->input->post('id_peserta');
+
+        $id_event = base64_decode($id_event2);
+        $email = $this->input->post('email');
+
+
+
+        $materi =  $this->db->query('select * from materi where publish = 1 and id_event =  "' . $id_event . '"')->result();
+
+        // echo "<pre>";
+        // print_r($materi);
+        foreach ($materi as $m) {
+            $jawaban[] =  $this->db->query('select * from jawaban where id_peserta = "' . $id_peserta . '" and  materi_id =  "' . $m->materi_id . '"  and email="' . $email . '" order by materi_id desc')->row();
+
+            $soal[$m->materi_id] =  $this->db->query('select * from soalonline where materi_id =  "' . $m->materi_id . '" order by materi_id desc')->result();
+            $jawaban_skor[$m->materi_id] =  $this->db->query('select * from jawaban where id_peserta = "' . $id_peserta . '" and  materi_id =  "' . $m->materi_id . '"  and email="' . $email . '" order by materi_id desc')->row();
+
+
+            foreach ($soal[$m->materi_id] as $k => $key) {
+
+                $pilihan = json_decode($key->pilihan);
+
+                $a = $this->objToArray(json_decode($jawaban_skor[$key->materi_id]->jawaban, true));
+
+                foreach ($pilihan as $pi) {
+
+                    if ($pi->code == '1') {
+                        $folder_jawaban = 'jawaban_a';
+                        $nama_file_jawaban = $pi->name;
+                    } elseif ($pi->code == '2') {
+                        $folder_jawaban = 'jawaban_b';
+                        $nama_file_jawaban = $pi->name;
+                    } elseif ($pi->code == '3') {
+                        $folder_jawaban = 'jawaban_c';
+                        $nama_file_jawaban = $pi->name;
+                    } elseif ($pi->code == '4') {
+                        $folder_jawaban = 'jawaban_d';
+                        $nama_file_jawaban = $pi->name;
+                    } elseif ($pi->code == '5') {
+                        $folder_jawaban = 'jawaban_e';
+                        $nama_file_jawaban = $pi->name;
+                    }
+
+                    $Path_img_jawaban = base_url("assets/file_upload/soalonline/" . $folder_jawaban . "/" . $nama_file_jawaban);
+                    $Path_jawaban = FCPATH . 'assets/file_upload/soalonline/' . $folder_jawaban . "/" . $nama_file_jawaban;
+
+                    if ($nama_file_jawaban) {
+                        if (file_exists($Path_jawaban)) {
+                            $Path2_jawaban = $Path_img_jawaban;
+                            $type = 'gambar';
+                        } else {
+                            $Path2_jawaban =  $pi->name;
+                            $type = 'text';
+                        }
+                    } else {
+                        $Path2_jawaban =  $pi->name;
+                        $type = 'text';
+                    }
+
+
+
+                    $pil[$key->id][] = array(
+                        'code' => $pi->code,
+                        'name' => $Path2_jawaban,
+                        'type' => $type,
+                    );
+                }
+
+
+               if ($key->id == $a['ans_' . $key->id]['soal']) {
+
+                  
+
+
+
+                    //  $Path = './assets/file_upload/soalonline/'.$s['img'];
+                    $Path_img = base_url("assets/file_upload/soalonline/soal/" . $key->img);
+
+                    $Path = FCPATH . 'assets/file_upload/soalonline/soal/' . $key->img;
+
+                    if (file_exists($Path)) {
+                        $Path1 = $key->img;
+                        if ($Path1) {
+                            $Path2 = $Path_img;
+                        } else {
+                            $Path2 = "";
+                        }
+                    } else {
+                        $Path2 = "";
+                    }
+
+
+                    // pembahasan
+                    $Path_pembahasan_img = base_url("assets/file_upload/soalonline/pembahasan/" . $key->pembahasan_img);
+
+                    $Path = FCPATH . 'assets/file_upload/soalonline/pembahasan/' . $key->pembahasan_img;
+
+                    if (file_exists($Path)) {
+                        $Path1_pembahasan_img = $key->pembahasan_img;
+                        if ($Path1_pembahasan_img) {
+                            $Path2_pembahasan_img = $Path_pembahasan_img;
+                        } else {
+                            $Path2_pembahasan_img = "";
+                        }
+                    } else {
+                        $Path2_pembahasan_img = "";
+                    }
+
+
+
+                    $data_data[$key->materi_id][] = array(
+                        'id' => $key->id,
+                        'materi_id' => $key->materi_id,
+                        'materi_nama' => $m->materi_nama,
+
+                        'pertanyaan' => $this->ubahkotak($key->pertanyaan),
+                        'img' => $Path2,
+
+                        'jawaban' => $key->jawaban,
+                        'pilihan' => $pil[$key->id],
+                        'pertanyaan_img' => $key->pertanyaan_img,
+                        'pembahasan' => $key->pembahasan,
+                        'pembahasan_img' => $Path2_pembahasan_img,
+                        'jawaban_anda' => $a['ans_' . $key->id]['jawaban'],
+                    );
+                }
+            }
+
+
+            $data_api[$m->materi_id] = array(
+                $m->materi_id => $data_data[$m->materi_id],
+
+            );
+        }
+
+
+        foreach($data_api as $key => $d){
+            $data_akhir[] = array(
+                'materi_nama'=>$d[$key][0]['materi_nama'],
+                'materi_id'=>$key,
+                'data'=>$d[$key]
+
+            );
+        }
+
+        echo json_encode($data_akhir);
+    }
+
+
+
+     function pembahasan_materi()
+    {
+
+        // $email = base64_decode($email2);
+        // $id_jawaban = base64_decode($id_jawaban2);
+
+        $email = $this->input->post('email');
+
+        $id_jawaban = $this->input->post('id_jawaban');
+
+
+
+        $id_jawaban_s =  $this->db->query('select * from jawaban where id_jawaban =  "' . $id_jawaban . '"')->row();
+
+        $materi =  $this->db->query('select * from materi where publish = 1 and materi_id =  "' . $id_jawaban_s->materi_id . '"')->result();
+
+        // echo "<pre>";
+        // print_r($materi);
+
+        // die;
+        foreach ($materi as $m) {
+            $jawaban[] =  $this->db->query('select * from jawaban where materi_id =  "' . $m->materi_id . '"  and email="' . $email . '" order by materi_id desc')->row();
+
+            $soal[$m->materi_id] =  $this->db->query('select * from soalonline where materi_id =  "' . $m->materi_id . '" order by materi_id desc')->result();
+            $jawaban_skor[$m->materi_id] =  $this->db->query('select * from jawaban where id_jawaban = "' . $id_jawaban . '" and materi_id =  "' . $m->materi_id . '"  and email="' . $email . '" order by materi_id desc')->row();
+
+
+            foreach ($soal[$m->materi_id] as $k => $key) {
+
+                $pilihan = json_decode($key->pilihan);
+                $a = $this->objToArray(json_decode($jawaban_skor[$key->materi_id]->jawaban, true));
+
+
+                foreach ($pilihan as $pi) {
+
+                    if ($pi->code == '1') {
+                        $folder_jawaban = 'jawaban_a';
+                        $nama_file_jawaban = $pi->name;
+                    } elseif ($pi->code == '2') {
+                        $folder_jawaban = 'jawaban_b';
+                        $nama_file_jawaban = $pi->name;
+                    } elseif ($pi->code == '3') {
+                        $folder_jawaban = 'jawaban_c';
+                        $nama_file_jawaban = $pi->name;
+                    } elseif ($pi->code == '4') {
+                        $folder_jawaban = 'jawaban_d';
+                        $nama_file_jawaban = $pi->name;
+                    } elseif ($pi->code == '5') {
+                        $folder_jawaban = 'jawaban_e';
+                        $nama_file_jawaban = $pi->name;
+                    }
+
+                    $Path_img_jawaban = base_url("assets/file_upload/soalonline/" . $folder_jawaban . "/" . $nama_file_jawaban);
+                    $Path_jawaban = FCPATH . 'assets/file_upload/soalonline/' . $folder_jawaban . "/" . $nama_file_jawaban;
+
+                    if ($nama_file_jawaban) {
+                        if (file_exists($Path_jawaban)) {
+                            $Path2_jawaban = $Path_img_jawaban;
+                            $type = 'gambar';
+                        } else {
+                            $Path2_jawaban =  $pi->name;
+                            $type = 'text';
+                        }
+                    } else {
+                        $Path2_jawaban =  $pi->name;
+                        $type = 'text';
+                    }
+
+
+
+                    $pil[$key->id][] = array(
+                        'code' => $pi->code,
+                        'name' => $Path2_jawaban,
+                        'type' => $type,
+                    );
+                }
+
+
+                if ($key->id == $a['ans_' . $key->id]['soal']) {
+
+
+
+                    //  $Path = './assets/file_upload/soalonline/'.$s['img'];
+                    $Path_img = base_url("assets/file_upload/soalonline/soal/" . $key->img);
+
+                    $Path = FCPATH . 'assets/file_upload/soalonline/soal/' . $key->img;
+
+                    if (file_exists($Path)) {
+                        $Path1 = $key->img;
+                        if ($Path1) {
+                            $Path2 = $Path_img;
+                        } else {
+                            $Path2 = "";
+                        }
+                    } else {
+                        $Path2 = "";
+                    }
+
+
+                    // pembahasan
+                    $Path_pembahasan_img = base_url("assets/file_upload/soalonline/pembahasan/" . $key->pembahasan_img);
+
+                    $Path = FCPATH . 'assets/file_upload/soalonline/pembahasan/' . $key->pembahasan_img;
+
+                    if (file_exists($Path)) {
+                        $Path1_pembahasan_img = $key->pembahasan_img;
+                        if ($Path1_pembahasan_img) {
+                            $Path2_pembahasan_img = $Path_pembahasan_img;
+                        } else {
+                            $Path2_pembahasan_img = "";
+                        }
+                    } else {
+                        $Path2_pembahasan_img = "";
+                    }
+
+
+
+                    $data_data[] = array(
+                        'id' => $key->id,
+                        'materi_id' => $key->materi_id,
+                        'materi_nama' => $m->materi_nama,
+
+                        'pertanyaan' => $key->pertanyaan,
+                        'img' => $Path2,
+
+                        'jawaban' => $key->jawaban,
+                        'pilihan' => $pil[$key->id],
+                        'pertanyaan_img' => $key->pertanyaan_img,
+                        'pembahasan' => $key->pembahasan,
+                        'pembahasan_img' => $Path2_pembahasan_img,
+                        'jawaban_anda' => $a['ans_' . $key->id]['jawaban'],
+                    );
+                }
+            }
+
+
+            // $data_api[] = array(
+            //     $m->materi_id => $data_data[$m->materi_id],
+
+            // );
+        }
+
+        echo json_encode($data_data);
+    }
+
+
+
+      function cari_nilai_materi()
+    {
+
+
+
+        $email = $this->input->post('email');
+        $id_jawaban = $this->input->post('id_jawaban');
+
+        $id_jawaban_s =  $this->db->query('select * from jawaban where id_jawaban =  "' . $id_jawaban . '"')->row();
+        $materi =  $this->db->query('select * from materi where publish = 1 and materi_id =  "' . $id_jawaban_s->materi_id . '"')->result();
+
+
+
+        foreach ($materi as $m) {
+
+            // print_r($m->materi_id);
+            $jawaban[] =  $this->db->query('select * from jawaban where materi_id =  "' . $m->materi_id . '"  and email="' . $email . '" order by materi_id desc')->row();
+
+            $soal[$m->materi_id] =  $this->db->query('select * from soalonline where  materi_id =  "' . $m->materi_id . '" order by materi_id desc')->result();
+
+
+            $jawaban_skor[$m->materi_id] =  $this->db->query('select * from jawaban where  id_jawaban = "' . $id_jawaban . '" and materi_id =  "' . $m->materi_id . '"  and email="' . $email . '" order by materi_id desc')->row();
+
+            // echo "<pre>";
+            // print_r($soal);
+
+            foreach ($soal[$m->materi_id] as  $key) {
+                $key1[] = $key;
+            }
+        }
+
+
+
+
+
+        // echo "<pre>";
+        // print_r($key1);
+        // die;
+
+        $benar = 0;
+        $salah = 0;
+        $kosong = 0;
+        $skor_benar = 0;
+        $skor_salah = 0;
+        $skor_gadisi = 0;
+
+        foreach ($key1 as $key) {
+            $a = $this->objToArray(json_decode($jawaban_skor[$key->materi_id]->jawaban, true));
+
+
+            if ($key->id == $a['ans_' . $key->id]['soal']) {
+
+                //hitung benar
+
+                // echo $key->id;
+                // die;
+
+                if ($key->jawaban == $a['ans_' . $key->id]['jawaban']) {
+                    $benar +=  1;
+                    $skor_benar += 4;
+
+
+                    //  echo "benar";
+                } elseif ($a['ans_' . $key->id]['jawaban'] == 0) {
+                    //ga di isi 
+                    $kosong +=  1;
+                    $skor_gadisi += 0;
+
+                    //  echo "ga disi";
+                } else {
+
+                    // echo "salah";
+
+                    //salah
+                    $skor_salah +=   -1;
+                    $salah +=  1;
+                }
+            }
+        }
+
+
+        //die;
+
+        //error_reporting(0);
+
+
+
+        //  echo "<pre>";
+        // print_r($soal);
+
+        // // echo "<pre>";
+        // // print_r($a);
+        // die;
+
+        // $skor = 0;
+        // foreach($jawaban as $j){
+        //     $skor += $j->skor;
+        // }
+
+        $hasil_hasil_nilai = $skor_benar + $skor_gadisi + $skor_salah;
+
+        if ($hasil_hasil_nilai <= 0) {
+            $hasil_hasil_nilai2 = 0;
+        } else {
+            $hasil_hasil_nilai2 = $hasil_hasil_nilai;
+        }
+
+        $data_api = array(
+            'skor' => $hasil_hasil_nilai,
+
+            'skor_benar' => $skor_benar,
+            'skor_gadisi' => $skor_gadisi,
+            'skor_salah' => $skor_salah,
+
+
+            'benar' => $benar,
+            'kosong' => $kosong,
+            'salah' => $salah,
+
+            'totalsoal' => count($key1),
+        );
+
+        echo json_encode($data_api);
+    }
+
+
+
+
+
+
+    function cek_mail($email,$nama,$no_tlp,$no_wa){
+
+        $url = "https://api.edunitas.com/mod/edun-regist-g";
+
+
+       
+    
+          $postData = array(
+                "format"=> "json",
+                    "setdata_mod"=> "chekmail",
+                    "formdata_email"=> $email,
+         );
+
+
+  // echo "<pre>";
+  // print_r($postData);
+
+// for sending data as json type
+      $fields = json_encode($postData);
+
+
+
+
+      $ch = curl_init($url);
+      curl_setopt(
+      $ch,
+      CURLOPT_HTTPHEADER,
+      array(
+      'Content-Type: application/json', // if the content type is json
+      //  'bearer: '.$token // if you need token in header
+      )
+      );
+
+      //  curl_setopt($ch, CURLOPT_HEADER, false);
+      // curl_setopt ( $ch, CURLOPT_HTTPHEADER, $headers );
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+
+      $result = curl_exec($ch);
+      curl_close($ch);
+
+      //   return $result;
+
+      $output = json_decode($result);
+
+
+      // echo "<pre>";
+      // print_r($output);
+
+      if($output->statuscode=="001"){
+         $this->register_latihan($email,$nama,$no_tlp,$no_wa);
+      }else{
+        $data['status']="202";
+        $data['message']="sukses";
+
+        echo json_encode($data);
+      }
+
+      
+
+    }
+
+
+    function register_latihan($email,$nama,$no_tlp,$no_wa){
+        $url = "https://api.edunitas.com/mod/edun-regist-g";
+
+
+        // $email = $this->input->post('email');
+        // $nama = $this->input->post('nama');
+        // $no_tlp = $this->input->post('no_tlp');
+        // $no_wa = $this->input->post('no_wa');
+        
+
+
+
+            $postData = array(
+                "format"=> "json",
+                "setdata_mod"=> "regist",
+                "formdata_email"=> $email,
+                "formdata_nama"=> $nama,
+                "formdata_notlp"=> $no_tlp,
+                "formdata_nowa"=> $no_wa,
+               
+                "formdata_lulusan"=> "SMA",
+                "formdata_alias"=> "tryout-p"
+            );
+
+
+  // echo "<pre>";
+  // print_r($postData);
+
+// for sending data as json type
+      $fields = json_encode($postData);
+
+
+
+
+      $ch = curl_init($url);
+      curl_setopt(
+      $ch,
+      CURLOPT_HTTPHEADER,
+      array(
+      'Content-Type: application/json', // if the content type is json
+      //  'bearer: '.$token // if you need token in header
+      )
+      );
+
+      //  curl_setopt($ch, CURLOPT_HEADER, false);
+      // curl_setopt ( $ch, CURLOPT_HTTPHEADER, $headers );
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+
+      $result = curl_exec($ch);
+      curl_close($ch);
+
+      //   return $result;
+
+      $output = json_decode($result);
+
+      if($output->statuscode=="009"){
+        $data['status']="200";
+        $data['message']=$output->message;
+      }else{
+        $data['status']="gagal";
+        $data['message']=$output->message;
+      }
+
+      echo json_encode($data);
+    }
+
+     function log_login()
+    {
+
+        $email = $this->input->post('email');
+        $nama = $this->input->post('nama');
+        $nama_sekolah = $this->input->post('nama_sekolah');
+        $leveledu = $this->input->post('leveledu');
+        $no_tlp = $this->input->post('no_tlp');
+        $no_wa = $this->input->post('no_wa');
+
+
+       $a = $this->cek_mail($email,$nama,$no_tlp,$no_wa);
+
+        
+
+
+        $data_log_login = array(
+            'email' => $email,
+            'last_login' => date('Y-m-d H:i:s'),
+            'device_id' => '',
+            'nama' => $nama,
+            'sekolah' => $nama_sekolah,
+            'leveledu' => $leveledu,
+            'log' => 2,
+        );
+        $q =    $this->db->insert('log_login', $data_log_login);
+
+        // if ($q) {
+        //     $data['sukses'] = 200;
+        //     $data['message'] = 'Sukses';
+        // } else {
+        //     $data['sukses'] = 400;
+        //     $data['message'] = 'gagal';
+        // }
+
+       // echo json_encode($data);
+    }
+
+
 
 
 

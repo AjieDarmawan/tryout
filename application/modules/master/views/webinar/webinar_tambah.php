@@ -27,12 +27,21 @@
 
 
                             <div class="form-group row">
-                                <label class="col-2 col-form-label">Gambar</label>
+                                <label class="col-2 col-form-label">Gambar </label>
+
                                 <div class="col-10">
 
-                                    <input type="file" name="img">
+                                    <input required="" type="file" name="img">
+                                    <p style="color:red">Ukuran Gambar 370 X 525</p>
                                 </div>
                             </div>
+
+
+
+
+
+
+
 
                             <div class="form-group row">
                                 <label class="col-2 col-form-label">Topik</label>
@@ -151,6 +160,15 @@
                                 <label class="col-2 col-form-label">Link </label>
                                 <div class="col-8">
                                     <textarea class="form-control" name="link" type="text" id="link"></textarea>
+                                </div>
+
+                            </div>
+
+
+                             <div class="form-group row">
+                                <label class="col-2 col-form-label">Link Group Wa</label>
+                                <div class="col-8">
+                                    <textarea class="form-control" name="share_link" type="text" id="share_link"></textarea>
                                 </div>
 
                             </div>

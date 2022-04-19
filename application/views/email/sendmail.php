@@ -92,7 +92,7 @@
 
                                  <a href="" style="text-decoration:none" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://play.google.com/store/apps/details?id%3Did.co.my&amp;source=gmail&amp;ust=1567253933288000&amp;usg=AFQjCNGamDknA0283mEqCO7-_zJGfDKOfw">
 
-                                 <img src="https://ci3.googleusercontent.com/proxy/VO5sfKmmHfolmWLnFs1D0XQrpxWMMmINzN8vb13yH_S4GbpZzsCkI-FtIg4etWrHO8sJBebE0UnUU9m8dRC-nWjM9aS_upN2yF2TC8bzkgwTMeZjcP3Zy_8=s0-d-e1-ft#https://www..co.id/HCID/media/EXREQ/VA_BCA_BNI/playstore.png" alt="Download di Android" style="color:#e11931;margin:0 5px 0 0;max-width:140px;font:bold small \'Roboto\',sans-serif" border="0">
+                                 <img src="https://sipema.p2k.co.id/img/apps_edunitas.jpg" alt="Download di Android" style="color:#e11931;margin:0 5px 0 0;max-width:140px;font:bold small \'Roboto\',sans-serif" border="0">
 
                                  </a>
 
@@ -170,19 +170,19 @@
 
                                                    <li>
 
-                                                      <img src="https://ci5.googleusercontent.com/proxy/ROkrqHsvrDLOqdrf80TUR83QUidxTIA2FLaenfc-2UG5Oc9rN2wkd6e6Et9tTLQhj4cfMeP7fuWvuVvLsL-11Bpxa6kefoKb0q6juNbCkrwpLLc1RCsKE-w=s0-d-e1-ft" alt="Telepon: " title="" style="color:#404040;margin:0 0 4px" width="18" height="18" border="0" align="middle">&nbsp;<a href="tel:+622112345678" style="font-weight:bold;text-decoration:none;color:#404040" target="_blank">(021) 1234-5678</a>
+                                                     <a href="tel:+622112345678" style="font-weight:bold;text-decoration:none;color:#404040" target="_blank">(021) 1234-5678</a>
 
                                                    </li>
 
                                                    <li>
 
-                                                      <img src="https://ci6.googleusercontent.com/proxy/Nm80YpDutYRhq6vJ7u7SpI1jzpU8Xri_TC6T-UUW2L2uCj-sMrbaZfYSHm9gBmDuqOqaSFySGIUfG_msyfUVmpiZA1eA7KCKnDmni9USEIVUGVqq3w=s0-d-e1-ft" alt="Email: " title="" style="color:#404040;margin:0 0 4px" width="18" height="18" border="0" align="middle">&nbsp;<a href="info@edunitas.com" style="font-weight:bold;text-decoration:none;color:#404040" target="_blank">info@edunitas.com</a>
+                                                     <a href="info@edunitas.com" style="font-weight:bold;text-decoration:none;color:#404040" target="_blank">info@edunitas.com</a>
 
                                                    </li>
 
                                                    <li>
 
-                                                      <img src="https://ci6.googleusercontent.com/proxy/Tf1-rdx5UINxUEDhtltEotYjotAHUCT6feev-5Tz3NP4R2B-mHctPabj08-ifNcIhb6UXnx3XyB9RbgkGccVI_KDd7XApxnYB_z0txoFp_XFdL-WPwQr=s0-d-e1-ft" alt="Website: " title="" style="color:#404040;margin:0 0 4px" width="18" height="18" border="0" align="middle">&nbsp;<a href="https://www..co.id/?utm_source=Email" style="font-weight:bold;text-decoration:none;color:#404040" target="_blank" data-saferedirecturl="https://edunitas.com">edunitas.com</a>
+                                                     <a href="https://www..co.id/?utm_source=Email" style="font-weight:bold;text-decoration:none;color:#404040" target="_blank" data-saferedirecturl="https://edunitas.com">edunitas.com</a>
 
                                                    </li>
 
@@ -215,9 +215,7 @@
                               <tr>
 
                                  <td style="padding:10px" valign="middle" align="right">
-
-                                    <img src="http://dev.edunitas.com/manajemen/assets/img/apptxt.png" width="80%" alt=""  border="0">
-
+                                    <img src="https://edunovasi.com/assets/img/tryout-si-edun.png" width="60%" alt=""  border="0">
                                  </td>
 
                               </tr>

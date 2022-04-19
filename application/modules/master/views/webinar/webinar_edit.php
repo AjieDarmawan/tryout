@@ -17,16 +17,23 @@
                         </div>
                     </div>
                     <!--begin::Form-->
-
-<?php 
+                    <?php 
 //  echo "<pre>";
 //  print_r($webinar);
+
+
+ $w = explode("-",$webinar->waktu);
+
+ $awal = explode(":",$w[0]);
+ $akhir = explode(":",$w[1]);
+
+//  print_r($awal);
 
 ?>
                     <form action="<?php echo base_url('master/Webinar/update_simpan') ?>" method="post" enctype="multipart/form-data">
                         <div class="card-body">
                             <div class="form-group mb-8">
-                                <input type="" name="id_webinar" value="<?php echo $webinar->id_webinar?>"/>
+                                <input type="hidden" name="id_webinar" value="<?php echo $webinar->id_webinar?>"/>
 
                             </div>
 
@@ -61,9 +68,13 @@
                                         for ($x = 00; $x <= 24; $x++) {
                                             $number = str_pad($x, 2, '0', STR_PAD_LEFT);
 
-                                           
+                                           if($number==$awal[0]){
+                                               $selected = "selected";
+                                           }else{
+                                              $selected = "";
+                                           }
                                         ?>
-                                            <option value="<?php echo $number; ?>"><?php echo $number; ?></option>
+                                            <option value="<?php echo $number; ?>" <?php echo $selected?>  ><?php echo $number; ?></option>
                                         <?php
                                         }
                                         ?>
@@ -76,8 +87,14 @@
                                         <?php
                                         for ($x = 01; $x <= 60; $x++) {
                                             $number = str_pad($x, 2, '0', STR_PAD_LEFT);
+
+                                            if($number==$awal[1]){
+                                                $selected = "selected";
+                                            }else{
+                                               $selected = "";
+                                            }
                                         ?>
-                                            <option value="<?php echo $number; ?>"><?php echo $number; ?></option>
+                                            <option value="<?php echo $number; ?>" <?php echo $selected?>><?php echo $number; ?></option>
                                         <?php
                                         }
                                         ?>
@@ -94,8 +111,14 @@
                                         <?php
                                         for ($x = 00; $x <= 24; $x++) {
                                             $number = str_pad($x, 2, '0', STR_PAD_LEFT);
+
+                                            if($number==$akhir[0]){
+                                                $selected = "selected";
+                                            }else{
+                                               $selected = "";
+                                            }
                                         ?>
-                                            <option value="<?php echo $number; ?>"><?php echo $number; ?></option>
+                                            <option value="<?php echo $number; ?>" <?php echo $selected?>><?php echo $number; ?></option>
                                         <?php
                                         }
                                         ?>
@@ -108,8 +131,14 @@
                                         <?php
                                         for ($x = 01; $x <= 60; $x++) {
                                             $number = str_pad($x, 2, '0', STR_PAD_LEFT);
+
+                                            if($number==$akhir[1]){
+                                                $selected = "selected";
+                                            }else{
+                                               $selected = "";
+                                            }
                                         ?>
-                                            <option value="<?php echo $number; ?>"><?php echo $number; ?></option>
+                                            <option value="<?php echo $number; ?>" <?php echo $selected?>><?php echo $number; ?></option>
                                         <?php
                                         }
                                         ?>
@@ -158,6 +187,14 @@
                                 <label class="col-2 col-form-label">Link </label>
                                 <div class="col-8">
                                     <textarea class="form-control" name="link" type="text" id="link"><?php echo $webinar->link;?></textarea>
+                                </div>
+
+                            </div>
+
+                             <div class="form-group row">
+                                <label class="col-2 col-form-label">Share Link </label>
+                                <div class="col-8">
+                                    <textarea class="form-control" name="share_link" type="text" id="share_link"><?php echo $webinar->share_link;?></textarea>
                                 </div>
 
                             </div>

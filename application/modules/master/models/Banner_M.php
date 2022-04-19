@@ -1,22 +1,23 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Materi_M extends CI_Model
+class Banner_M extends CI_Model
 {
 
 
     //set nama tabel yang akan kita tampilkan datanya
-    var $table = 'materi';
+    var $table = 'banner';
     //set kolom order, kolom pertama saya null untuk kolom edit dan hapus
-    var $column_order = array(null, 'materi_nama','tgl_mulai','tgl_selesai','no_urut');
+    var $column_order = array(null, 'kategori');
 
-    var $column_search = array('materi_nama','tgl_mulai','tgl_selesai','no_urut');
+    var $column_search = array('kategori');
     // default order 
-    var $order = array('materi_id' => 'asc');
+    var $order = array('id_banner' => 'asc');
 
 
-    public $materi_id;
-    public $materi_nama;
+    public $id_banner;
+    public $kategori;
     
+
 
 
 
@@ -26,17 +27,8 @@ class Materi_M extends CI_Model
         $this->load->database();
     }
 
-    private function _get_datatables_query($id)
-    {   
-
-        $id2= base64_decode($id);
-
-        
-      
-        $this->db->select('materi.*,jenis.jenis_nama');
-		$this->db->join('jenis', 'jenis.id_jenis = materi.id_jenis', 'inner');
-        $this->db->where('materi.id_event',$id2);
-         $this->db->order_by('materi.no_urut','ASC');
+    private function _get_datatables_query()
+    {
         $this->db->from($this->table);
         $i = 0;
         foreach ($this->column_search as $item) // loop kolom 
@@ -65,18 +57,18 @@ class Materi_M extends CI_Model
         }
     }
 
-    function get_datatables($id)
+    function get_datatables()
     {
-        $this->_get_datatables_query($id);
+        $this->_get_datatables_query();
         if ($this->input->post('length') != -1)
             $this->db->limit($this->input->post('length'), $this->input->post('start'));
         $query = $this->db->get();
         return $query->result();
     }
 
-    function count_filtered($id)
+    function count_filtered()
     {
-        $this->_get_datatables_query($id);
+        $this->_get_datatables_query();
         $query = $this->db->get();
         return $query->num_rows();
     }
@@ -89,7 +81,7 @@ class Materi_M extends CI_Model
 
 
 
-    // private $_table = "materi";
+    // private $_table = "jenis";
 
   
 
@@ -100,45 +92,36 @@ class Materi_M extends CI_Model
     
     public function getById($id)
     {
-        return $this->db->get_where($this->table, ["materi_id" => $id])->row();
+        return $this->db->get_where($this->table, ["id_banner" => $id])->row();
     }
 
-    public function save($Materi,$id_jurusan,$tgl_mulai,$tgl_selesai,$id_event,$waktu,$no_urut,$id_jenis)
+    public function save($divisi)
     {
         // $post = $this->input->post();
-        // $this->materi_id = uniqid();
-        // $this->materi_nama = $divisi;
+        // $this->id_banner = uniqid();
+        // $this->kategori = $divisi;
         $data = array(
-            'materi_nama'=>$Materi,
-            'id_jurusan'=>$id_jurusan,
-            'tgl_mulai'=>$tgl_mulai,
-            'tgl_selesai'=>$tgl_selesai,
-            'id_event'=>$id_event,
-            'waktu'=>$waktu,
-            'no_urut'=>$no_urut,
-            'id_jenis'=>$id_jenis,
+            'kategori'=>$divisi,
         );
-        return $this->db->insert('materi', $data);
+        return $this->db->insert('banner', $data);
     }
 
-    public function update($materi_id,$materi_nama,$no_urut,$id_jenis)
+    public function update($id_banner,$kategori)
     {
         // $post = $this->input->post();
-        // $this->materi_id = $materi_id;
-        // $this->materi_nama = $materi_nama;
+        // $this->id_banner = $id_banner;
+        // $this->kategori = $kategori;
 
         $data = array(
-            'materi_nama'=>$materi_nama,
-            'no_urut'=>$no_urut,
-            'id_jenis'=>$id_jenis,
+            'kategori'=>$kategori,
         );
 
        
-        return $this->db->update('materi', $data, array('materi_id' => $materi_id));
+        return $this->db->update('banner', $data, array('id_banner' => $id_banner));
     }
 
     public function delete($id)
     {
-        return $this->db->delete($this->table, array("materi_id" => $id));
+        return $this->db->delete($this->table, array("id_banner" => $id));
     }
 }

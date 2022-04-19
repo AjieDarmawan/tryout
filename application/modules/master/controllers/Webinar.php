@@ -161,6 +161,7 @@ class Webinar extends CI_Controller
 
         $waktu_selesai_jam = $this->input->post('waktu_selesai_jam');
         $waktu_selesai_menit = $this->input->post('waktu_selesai_menit');
+        $share_link = $this->input->post('share_link');
 
 
 
@@ -193,6 +194,7 @@ class Webinar extends CI_Controller
                 'moderator'=>$moderator,
                 'publish'=>0,
                 'img'=>$filename,
+                'share_link'=>$share_link,
                 'create_add'=>date('Y-m-d H:i:s'),
                 'waktu'=>$waktu_mulai_jam.':'.$waktu_mulai_menit .'-'. $waktu_selesai_jam.':'.$waktu_selesai_menit
     
@@ -263,6 +265,7 @@ class Webinar extends CI_Controller
 
         $waktu_selesai_jam = $this->input->post('waktu_selesai_jam');
         $waktu_selesai_menit = $this->input->post('waktu_selesai_menit');
+        $share_link = $this->input->post('share_link');
 
 
         $config_img['upload_path']          = './assets/file_upload/webinar/';
@@ -294,6 +297,7 @@ class Webinar extends CI_Controller
                 'moderator'=>$moderator,
                 'publish'=>0,
                 'img'=>$filename,
+                'share_link'=>$share_link,
                 'create_add'=>date('Y-m-d H:i:s'),
                 'waktu'=>$waktu_mulai_jam.':'.$waktu_mulai_menit .'-'. $waktu_selesai_jam.':'.$waktu_selesai_menit
     
@@ -302,21 +306,9 @@ class Webinar extends CI_Controller
          
             $this->db->where('id_webinar',$id_webinar);
             $simpan = $this->db->update('webinar',$data_webinar);
-  
-          
-        }else{
-          $error = array('error' => $this->upload->display_errors());
-        
-        }
 
 
-
-
-
-     
-
-
-        $sess = $this->session->userdata();
+             $sess = $this->session->userdata();
         $data_log = array(
           'aktifitas'=>$sess['pegawai']->username.''.' Mengedit webinar '.$topik.' id '.$id_webinar,
           'datetime'=>date('Y-m-d H:i:s'),
@@ -331,13 +323,80 @@ class Webinar extends CI_Controller
 
         if($simpan){
            $this->session->set_flashdata('status',"success");
-			$this->session->set_flashdata('message', "<b>Success <i class='fa fa-check-square-o'></i></b>  Data berhasil di simpan");
+            $this->session->set_flashdata('message', "<b>Success <i class='fa fa-check-square-o'></i></b>  Data berhasil di simpan");
             
             redirect('master/webinar/');
         
         }else{
 
         }
+  
+          
+        }else{
+          $error = array('error' => $this->upload->display_errors());
+
+          // echo "<pre>";
+          // print_r($error);
+          // die;
+
+
+          $data_webinar = array(
+                'topik'=>$topik,
+                'tanggal'=>$tanggal,
+                'pembicara'=>$pembicara,
+                'desc'=>$desc,
+                'jabatan_pembicara'=>$jabatan_pembicara,
+                'moderator'=>$moderator,
+                'jabatan_moderator'=>$jabatan_moderator,
+                'link'=>$link,
+                'moderator'=>$moderator,
+                'moderator'=>$moderator,
+                'publish'=>0,
+                'share_link'=>$share_link,
+              
+                'create_add'=>date('Y-m-d H:i:s'),
+                'waktu'=>$waktu_mulai_jam.':'.$waktu_mulai_menit .'-'. $waktu_selesai_jam.':'.$waktu_selesai_menit
+    
+            );
+    
+         
+            $this->db->where('id_webinar',$id_webinar);
+            $simpan = $this->db->update('webinar',$data_webinar);
+
+
+             $sess = $this->session->userdata();
+        $data_log = array(
+          'aktifitas'=>$sess['pegawai']->username.''.' Mengedit webinar '.$topik.' id '.$id_webinar,
+          'datetime'=>date('Y-m-d H:i:s'),
+        );
+ 
+        $this->db->insert('log',$data_log);
+
+
+
+       
+
+
+        if($simpan){
+           $this->session->set_flashdata('status',"success");
+            $this->session->set_flashdata('message', "<b>Success <i class='fa fa-check-square-o'></i></b>  Data berhasil di simpan");
+            
+            redirect('master/webinar/');
+        
+        }else{
+
+        }
+        
+        }
+
+
+
+
+
+     
+
+
+       
 
     }
 

@@ -1,11 +1,16 @@
 
-    <?php 
-        // echo "<pre>";
-        // print_r($login);
-    ?>
+     <?php 
+    //     echo "<pre>";
+    //     print_r($register);
+    // ?>
+
+
 
 <center><h3> Aktivitas Login Harian </h3><center>
-      <table id="example3" class="display nowrap table-striped table-bordered table" style="width:100%">
+      <table  class="display nowrap table-striped table-bordered table" style="width:100%" style="overflow-y:scroll;
+                        overflow-x:scroll;
+                        height:700px;
+                        display:block;">
               <caption class="text-center"><br>
                </caption>
                 <thead>

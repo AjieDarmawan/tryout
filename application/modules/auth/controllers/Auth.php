@@ -263,83 +263,72 @@ class Auth extends CI_Controller
     function edu_sendmail($to_email,$to_name,$subject,$html_message,$attach=array(),$sender='setuju'){
 
 
-            // echo "<pre>";
-            // print_r($html_message);
-            //die;
+
+            $list_sender = array(
+                'enitas' => array(
+                    'email' => 'contact@edunitas.com',
+                    'sendername' => 'Edunitas'
+                ),
+                'lokeredu' => array(
+                    'email' => 'edukarir@edunitas.com',
+                    'sendername' => 'Edunitas'
+                ),
+                'setuju' => array(
+                    'email' => 'humas@gillandgroup.co.id',
+                    'sendername' => 'humas@gillandgroup.co.id'
+                )
+            );
 
 
 
+            $header = array(
+                'Content-Type: application/x-www-form-urlencoded',
+                'Connection: keep-alive'
+            );
 
-        //     if(count($attach)>0){
-        //         echo "tes";
-        //     }
-        // die;
-    
-    $list_sender = array(
-        'enitas' => array(
-            'email' => 'contact@edunitas.com',
-            'sendername' => 'Edunitas'
-        ),
-        'lokeredu' => array(
-            'email' => 'edukarir@edunitas.com',
-            'sendername' => 'Edunitas'
-        ),
-        'setuju' => array(
-            'email' => 'humas@gillandgroup.co.id',
-            'sendername' => 'humas@gillandgroup.co.id'
-        )
-    );
+            $fields = array(
+                    'sender' => $list_sender[$sender]['email'],
+                    'sendername' => $list_sender[$sender]['sendername'],
+                    'reciver' => $to_email,
+                    'recivername' => $to_name,
+                    'subject' => $subject, 
+                    'body' => $html_message         
+            );
 
+            // if(count($attach)>0){
+            //     $fields['attach']=json_encode($attach);
+            // }
 
-
-    $header = array(
-        'Content-Type: application/x-www-form-urlencoded',
-        'Connection: keep-alive'
-    );
-
-    $fields = array(
-            'sender' => $list_sender[$sender]['email'],
-            'sendername' => $list_sender[$sender]['sendername'],
-            'reciver' => $to_email,
-            'recivername' => $to_name,
-            'subject' => $subject, 
-            'body' => $html_message         
-    );
-    
-    // if(count($attach)>0){
-    //     $fields['attach']=json_encode($attach);
-    // }
-
-    $fields_string = '';
-    foreach($fields as $key1=>$value1) { $fields_string .= $key1.'='.$value1.'&'; }
-    rtrim($fields_string, '&');
+            $fields_string = '';
+            foreach($fields as $key1=>$value1) { $fields_string .= $key1.'='.$value1.'&'; }
+            rtrim($fields_string, '&');
 
 
-    ////////////////////////////////////////////////////////////////////////////
-            
-    $MAILAPI_url = "https://mail-api.p2k.co.id/sendmail.php";
+            ////////////////////////////////////////////////////////////////////////////
+                    
+            $MAILAPI_url = "https://mail-api.p2k.co.id/sendmail.php";
 
-    $MAILAPI_curl = curl_init();
-    curl_setopt_array($MAILAPI_curl, array(
-            CURLOPT_URL => $MAILAPI_url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            //CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => $fields_string,
-            CURLOPT_HTTPHEADER => $header,
-    ));
+            $MAILAPI_curl = curl_init();
+            curl_setopt_array($MAILAPI_curl, array(
+                    CURLOPT_URL => $MAILAPI_url,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    //CURLOPT_TIMEOUT => 30,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => $fields_string,
+                    CURLOPT_HTTPHEADER => $header,
+            ));
 
-    $MAILAPI_response = curl_exec($MAILAPI_curl);
-    $MAILAPI_err = curl_error($MAILAPI_curl);
-    curl_close($MAILAPI_curl);
-    $MAILAPI_datares = json_decode($MAILAPI_response, true);
-    
-    //print_r($MAILAPI_response);
-    
-    //----------------
+            $MAILAPI_response = curl_exec($MAILAPI_curl);
+            $MAILAPI_err = curl_error($MAILAPI_curl);
+            curl_close($MAILAPI_curl);
+            $MAILAPI_datares = json_decode($MAILAPI_response, true);
+
+            print_r($MAILAPI_response);
+
+            //----------------
 
 }
 
@@ -347,21 +336,88 @@ class Auth extends CI_Controller
 function tes_email(){
 
   
-    $data_email_kirim = [
-        'name' => 'tes',
-        'code' => 'ccel',
-        //'content'=> $ilangin_semua_tagnya,
-        'content'=> '',
-        'module' => "Edu Kampus",
-    ];
+   
+
+    $url = "https://dev-api.edunitas.com/template_email";
+
+
+    $template = "registrasi-tryout-nl";
+
+    $postData = array(
+       "template"=>$template,
+ 
+   );
+
 
     // echo "<pre>";
-    // print_r($kontent);
+    // print_r($postData);
 
-    // die;
+// for sending data as json type
+        $fields = json_encode($postData);
 
 
-     //$this->load->view('email/sendmail',$data_email_kirim,TRUE);
+
+
+        $ch = curl_init($url);
+        curl_setopt(
+        $ch,
+        CURLOPT_HTTPHEADER,
+        array(
+        'Content-Type: application/json', // if the content type is json
+        //  'bearer: '.$token // if you need token in header
+        )
+        );
+
+        //  curl_setopt($ch, CURLOPT_HEADER, false);
+        // curl_setopt ( $ch, CURLOPT_HTTPHEADER, $headers );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        //   return $result;
+
+        $output = json_decode($result);
+
+        //  echo "<pre>";
+        // print_r($output);
+        // die;
+
+        $txtdata = array(
+            'KODEREFF'=> "cek",
+            'NAMA'=> "cek",
+            'PASSWORD'=> "cek",
+            "NAMAREKOMENDER"=> "cek",
+        );
+
+
+
+           $a = $this->contentreplace($output->konten, $txtdata, false, true);
+
+        $a = $this->contentreplace($output->konten, $txtdata, false, true);
+        $org = trim(preg_replace('/\s\s+/', ' ', html_entity_decode($a, ENT_COMPAT, 'UTF-8')));
+
+
+        $kontent = htmlspecialchars_decode(html_entity_decode($org));
+        $kontent = html_entity_decode($kontent);
+        $kontent = trim(preg_replace('/\s\s+/', '<br />', $kontent));
+
+
+       
+
+        $data_email_kirim = [
+            'name' => 'tes',
+            'code' => 'ccel',
+            //'content'=> $ilangin_semua_tagnya,
+            'content'=> $kontent,
+            'module' => "Edu Kampus",
+        ];
+
+
+
+    
 
      $this->load->view('email/sendmail',$data_email_kirim);
 }
