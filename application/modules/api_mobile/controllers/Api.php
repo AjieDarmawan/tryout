@@ -2004,7 +2004,7 @@ class Api extends CI_Controller
           echo json_encode($data);
       }
 
-      function detial_latihan($judul){
+      function detail_latihan($judul){
           error_reporting(0);
         //$judul = "Pekan-I---Latihan-Soal";
 
@@ -2722,6 +2722,94 @@ class Api extends CI_Controller
             echo json_encode($data_data);
 
 
+     }
+
+
+     function webinar_detail()
+     {
+        
+ 
+         $id_webinar = 11;
+         //echo $id_webinar;
+ 
+         $k = $this->db->query("select * from webinar where id_webinar = " . $id_webinar . " order by id_webinar desc")->row();
+ 
+        // echo "<pre>";
+        // print_r($k->waktu);
+
+        $wak = explode("-",$k->waktu);
+
+        
+
+       $wak_selesai = $wak[1];
+ 
+       
+ 
+ 
+        //   $hari_ini = date('Y-m-d');
+
+        $jam = date('h:i');
+
+        //$jam = '17:35';
+
+
+
+        $hari_ini = '2022-04-26';
+ 
+ 
+         if($k->tanggal==$hari_ini){
+                
+            if($wak_selesai>=$jam){
+                $pulish_zoom = 1;
+            }elseif($wak_selesai<$jam){
+                $pulish_zoom = 2;
+            }
+             
+ 
+         }else if($k->tanggal<$hari_ini){
+           //   $template_mail = 'webinar-zoom';
+              $pulish_zoom = 2;
+ 
+         }
+ 
+ 
+ 
+         else{
+            
+              //$template_mail = 'webinar-wa';
+               $pulish_zoom = 0;
+ 
+         }
+ 
+ 
+ 
+ 
+ 
+         $gambar = base_url("assets/file_upload/webinar/" . $k->img);
+ 
+         $data = array(
+             'id_webinar' => $k->id_webinar,
+             'topik' => $k->topik,
+             'waktu' => $k->waktu,
+             'tanggal' => TanggalIndo($k->tanggal),
+             'foto' => $gambar,
+             'pembicara' => $k->pembicara,
+             'jabatan_pembicara' => $k->jabatan_pembicara,
+             'moderator' => $k->moderator,
+             'jabatan_moderator' => $k->jabatan_moderator,
+              'desc'=>$k->desc,
+               'share_link'=>$k->share_link,
+               'link'=>$k->link,
+               'publish_zoom'=>$pulish_zoom,
+         );
+ 
+         $data_data = array(
+             'status' => 200,
+             'message' => 'sukses',
+             'data' => $data,
+         );
+ 
+         echo json_encode($data_data);
      }
 
     

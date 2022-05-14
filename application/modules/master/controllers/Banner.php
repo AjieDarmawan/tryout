@@ -124,8 +124,10 @@ class Banner extends CI_Controller
 
         $config_img['upload_path']          = './assets/file_upload/banner/';
         $config_img['allowed_types']        = 'gif|jpg|png|jpeg';
-        $img_gambar                         = "banner".date('Ymd').mt_rand(1000, 9999);
+        $img_gambar                         = date('Ymd').mt_rand(1000, 9999);
         $config_img['file_name']            = $img_gambar;
+
+        
      
   
         $this->upload->initialize($config_img);
@@ -135,6 +137,10 @@ class Banner extends CI_Controller
           $data = array('upload_data' => $this->upload->data());
     
               $filename= $data['upload_data']['file_name'];
+
+              echo "<pre>";
+        print_r($data);
+        die;
 
               $data_banner = array(
                 'kategori'=>$kategori,

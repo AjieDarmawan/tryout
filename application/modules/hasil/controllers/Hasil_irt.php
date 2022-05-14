@@ -30,7 +30,7 @@ class Hasil_irt extends CI_Controller
     // redirect if needed, otherwise display the user list
     public function index()
     {
-        $url = "https://backend.edunovasi.com/api_mobile/api_irt/hitung_irt_testing/217";
+        $url = "https://backend.edunovasi.com/api_mobile/api_irt/hitung_irt_testing/316";
 
             $headers = array (
                     'Content-Type: application/json'  );

@@ -1,105 +1,6 @@
-<html>
-<thead></thead>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<style>
-  .tabs {
-}
-.tabs input[type=radio] {
-  display: none; 
-}
-.tabs label {
-  transition: background 0.4s ease-in-out, height 0.2s linear;
-  display: inline-block;
-  cursor: pointer;
-  color: #2EBEB9;
-  width: 20%;
-  height: 3em;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background: #FCFCFC;
-  text-align: center;
-  line-height: 3em; 
-}
-.tabs label:last-of-type {
-  border-bottom: none; 
-}
-.tabs label:hover {
-  background: #259692;
-  color:#ffffff;
-}
-@media screen and (max-width: 1600px) {
-.tabs label {
-  width: 15%; } 
-}
-@media screen and (max-width: 900px) {
-.tabs label {
-  width: 20%; 
-  } 
-}
-@media screen and (max-width: 600px) {
-.tabs label {
-  width: 100%;
-  display: block;
-  border-bottom: 2px solid #C7C6C4;
-  border-radius: 0; 
-} 
-}
-@media screen and (max-width: 600px) {
-.tabs {
-  margin: 0; 
-} 
-}
-
-#tab1:checked+label,
-  #tab2:checked+label,
-  #tab3:checked+label,
-  #tab4:checked+label,
-  #tab5:checked+label,
-  #tab6:checked+label,
-
-  #tab9:checked+label {
-    background: #2EBEB9;
-    color: #FFFFFF;
-  }
 
 
-.tab-content {
-  position: absolute;
-  top: -9999px;
-  padding: 10px; 
-}
 
-.tab-content-wrapper{
-  background: #FCFCFC;
-  border-top: #2EBEB9 5px solid;
-  border-bottom-right-radius: 3px;
-  border-bottom-left-radius: 3px;
-  border-top-right-radius: 3px;
-  
-}
-@media screen and (max-width: 600px) {
-.tab-content-wrapper, .tab1-content-wrapper {
-  border: none;
-  border-radius: 0; 
-} 
-}
-
- #tab1:checked~.tab-content-wrapper #tab-content-1,
-  #tab2:checked~.tab-content-wrapper #tab-content-2,
-  #tab3:checked~.tab-content-wrapper #tab-content-3,
-  #tab4:checked~.tab-content-wrapper #tab-content-4,
-  #tab5:checked~.tab-content-wrapper #tab-content-5,
-  #tab6:checked~.tab-content-wrapper #tab-content-6,
-
-  #tab9:checked~.tab-content-wrapper #tab-content-9 {
-    position: relative;
-    top: 0px;
-  }
-</style>
 
 <style type="text/css">
   
@@ -111,7 +12,7 @@
   position: relative;
   overflow: hidden;
   padding: 40px 25px 20px;
-  height: 25%;
+  height: 125%;
 }
 .c-dashboardInfo__title,
 .c-dashboardInfo__subInfo {
@@ -165,8 +66,6 @@
 }
 
 </style>
-
-<body>
 
    <a>
     <i class="fa fa-calendar"></i>&nbsp;
@@ -286,72 +185,72 @@
 </center>
 
 <br><br>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css" />
+<ul class="nav nav-tabs" role="tablist">
+	<li class="nav-item">
+		<a class="nav-link active" onclick="myFunction(1)" data-toggle="tab" href="#tabs-1" role="tab">Login</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" onclick="myFunction(2)"  data-toggle="tab" href="#tabs-2" role="tab">Latihan</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" onclick="myFunction(3)" data-toggle="tab" href="#tabs-3" role="tab">Event</a>
+	</li>
+
+    <li class="nav-item">
+		<a class="nav-link" onclick="myFunction(4)" data-toggle="tab" href="#tabs-4" role="tab">Register</a>
+	</li>
 
 
-  
-    
+    <li class="nav-item">
+		<a class="nav-link"  onclick="myFunction(5)" data-toggle="tab" href="#tabs-5" role="tab">Webinar</a>
+	</li>
 
 
-<div class="tabs">
-       <input type="radio" onclick="myFunction(1)"  name="tab" value="1" id="tab1" checked="checked">
-    <label for="tab1">Login</label>
-    <input type="radio" onclick="myFunction(2)" name="tab" value="2" id="tab2">
-    <label for="tab2">Latihan</label>
-    <input type="radio" onclick="myFunction(3)" name="tab"value="3" id="tab3">
-    <label for="tab3">Event</label>
-     <input type="radio" onclick="myFunction(4)" name="tab" value="4" id="tab4">
-    <label for="tab4">Register</label>
-
-     <input type="radio" onclick="myFunction(5)" name="tab" value="5" id="tab5">
-    <label for="tab5">Webinar</label>
-
-    <input type="radio" onclick="myFunction(6)" name="tab" value="6" id="tab6">
-    <label for="tab6">To Nasional</label>
-
-
-
-
-   
-  
-    <div class="tab-content-wrapper">
-      <div id="tab-content-1" class="tab-content">
-        <?php echo $this->load->view('monitoring/m_login',$login)?>
-    </div>
-      <div id="tab-content-2" class="tab-content">
-        
-      <?php echo $this->load->view('monitoring/m_latihan',$latihan)?>
-      </div>
-      <div id="tab-content-3" class="tab-content">
-        
-      <?php echo $this->load->view('monitoring/m_event',$event)?>
-      </div>
-
-       <div id="tab-content-4" class="tab-content">
-        
-        <?php echo $this->load->view('monitoring/m_register',$register)?>
-        </div>
-
-
-        <div id="tab-content-5" class="tab-content">
-
-        <?php echo $this->load->view('monitoring/m_webinar', $webinar) ?>
-      </div>
-
-
-      <div id="tab-content-6" class="tab-content">
-
-        <?php echo $this->load->view('monitoring/m_to_nasional', $to_nasional) ?>
-      </div>
-      
-    </div>
-  </div>
-</body>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <li class="nav-item">
+		<a class="nav-link" onclick="myFunction(6)" data-toggle="tab" href="#tabs-6" role="tab">TO Nasional</a>
+	</li>
+</ul><!-- Tab panes -->
 
 
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+
+
+
+
+
+<div class="tab-content">
+	<div class="tab-pane active" id="tabs-1" role="tabpanel">
+    <?php echo $this->load->view('monitoring/m_login',$login)?>
+	</div>
+	<div class="tab-pane" id="tabs-2" role="tabpanel">
+	<?php echo $this->load->view('monitoring/m_latihan',$latihan)?>
+	</div>
+	<div class="tab-pane" id="tabs-3" role="tabpanel">
+    <?php echo $this->load->view('monitoring/m_event',$event)?>
+	</div>
+
+    <div class="tab-pane" id="tabs-4" role="tabpanel">
+     <?php echo $this->load->view('monitoring/m_register',$register)?>
+	</div>
+
+
+    <div class="tab-pane" id="tabs-5" role="tabpanel">
+    <?php echo $this->load->view('monitoring/m_webinar', $webinar) ?>
+	</div>
+
+
+    <div class="tab-pane" id="tabs-6" role="tabpanel">
+    <?php echo $this->load->view('monitoring/m_to_nasional', $to_nasional) ?>
+	</div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.8/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
@@ -360,116 +259,6 @@
 
 
 
-<script>
-
-function myFunction(id) {
- // alert(id);
-
-  if(id==1){
-          $(document).ready(function() {
-          var table1 = $('#example').DataTable( {
-              responsive: true,
-              retrieve: true,
-          } );
-
-         new $.fn.dataTable.FixedHeader( table1 );
-
-       
-
-       
-
-      });
-   }
-
-   else if(id==2){
-          $(document).ready(function() {
-          var table2 = $('#example1').DataTable( {
-              responsive: true,
-              retrieve: true,
-          } );
-
-         new $.fn.dataTable.FixedHeader( table2 );
-
-         
-      });
-   }
-
-   else if(id==3){
-          $(document).ready(function() {
-          var table3 = $('#example2').DataTable( {
-              responsive: true,
-              retrieve: true,
-          } );
-
-          new $.fn.dataTable.FixedHeader( table3);
-      });
-   }
-
-   else if(id==4){
-          $(document).ready(function() {
-          var table4 = $('#example3').DataTable( {
-              responsive: true,
-              retrieve: true,
-          } );
-
-          new $.fn.dataTable.FixedHeader( table4 );
-      });
-   } else if (id == 5) {
-      $(document).ready(function() {
-        var table5 = $('#example4').DataTable({
-          responsive: true,
-          retrieve: true,
-        });
-
-        new $.fn.dataTable.FixedHeader(table5);
-      });
-    } else if (id == 6) {
-      $(document).ready(function() {
-        var table6 = $('#example5').DataTable({
-          responsive: true,
-          retrieve: true,
-        });
-
-        new $.fn.dataTable.FixedHeader(table6);
-      });
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
-</script>
-
 
 <script>
-   var tabs = document.querySelector('input[name="tab"]:checked').value;
 
-  
-
-   if(tabs==1){
-          $(document).ready(function() {
-          var table1 = $('#example').DataTable( {
-              responsive: true
-          } );
-
-          new $.fn.dataTable.FixedHeader( table1 );
-      });
-   }
-
-   
-
-  </script>
-
-
-
-</html>

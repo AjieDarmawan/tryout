@@ -140,7 +140,7 @@ class Monitoring extends CI_Controller
        
 
 
-        $this->load->view('monitoring/monitoring_v',$data);
+        $this->load->view('monitoring/monitoring_v2',$data);
      
     }
 

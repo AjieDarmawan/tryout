@@ -42,6 +42,7 @@
                                     <select name="kategori" class="form-control" required>
                                          <option value="mobile" <?php  if($banner->kategori=="mobile"){echo "selected";}else{echo "";}  ?>>Mobile</option>
                                          <option value="web" <?php  if($banner->kategori=="web"){echo "selected";}else{echo "";}  ?>>Web</option>
+                                         <option value="spescreen" <?php  if($banner->kategori=="spescreen"){echo "selected";}else{echo "";}  ?>>Spalschcreen</option>
                                     </select>
                                 </div>
 

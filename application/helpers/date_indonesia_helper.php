@@ -89,3 +89,35 @@ function _group_by($array, $key) {
     }
     return $return;
 }
+
+function sd_square($x, $mean) { return pow($x - $mean,2); }
+// Function to calculate standard deviation (uses sd_square)    
+function sd($array) {
+    // square root of sum of squares devided by N-1
+    return sqrt(array_sum(array_map("sd_square", $array, array_fill(0,count($array), (array_sum($array) / count($array)) ) ) ) / (count($array)-1) );
+}
+
+
+function sortAssociativeArrayByKey($array, $key, $direction)
+{
+
+    switch ($direction) {
+        case "ASC":
+            usort($array, function ($first, $second) use ($key) {
+                return $first[$key] <=> $second[$key];
+            });
+            break;
+        case "DESC":
+            usort($array, function ($first, $second) use ($key) {
+                return $second[$key] <=> $first[$key];
+            });
+            break;
+        default:
+            break;
+    }
+
+    return $array;
+}
+
+
+ 

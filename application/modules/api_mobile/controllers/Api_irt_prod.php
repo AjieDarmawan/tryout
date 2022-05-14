@@ -7,7 +7,7 @@ Header('Access-Control-Allow-Origin: *'); //for allow any domain, insecure
 Header('Access-Control-Allow-Headers: *'); //for allow any headers, insecure
 Header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
 
-class Api_irt extends CI_Controller
+class Api_irt_prod extends CI_Controller
 {
 
 
@@ -57,7 +57,7 @@ class Api_irt extends CI_Controller
     function hitung_irt_testing()
     {
 
-        $materi_id = 374;
+        $materi_id = 370;
 
         $soal = $this->db->query('select * from soalonline where materi_id = ' . $materi_id)->result();
       //  $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id = ' . $materi_id)->result();
@@ -65,7 +65,7 @@ class Api_irt extends CI_Controller
            // $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id = "'.$materi_id.'" and email not in ("ari.einton@gmail.com","arisaldi@edunovasi.com","traffandy@edunovasi.com","traffandy@gmail.com","gilangalqadar@gmail.com") limit 100')->result();
 
 
-$jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id = "'.$materi_id.'" and email not in ("ari.einton@gmail.com","arisaldi@edunovasi.com","traffandy@edunovasi.com","traffandy@gmail.com","gilangalqadar@gmail.com","") limit 510')->result();
+$jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id = "'.$materi_id.'" and email not in ("ari.einton@gmail.com","arisaldi@edunovasi.com","traffandy@edunovasi.com","traffandy@gmail.com","gilangalqadar@gmail.com","") limit 100')->result();
 
 
 
@@ -232,37 +232,22 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
 
 
 
-    function hitung_irt($materi_id,$limit)
+    function hitung_irt($materi_id)
     {
 
         //$materi_id = 217;
 
-        //error_reporting(0);
+        error_reporting(0);
 
-       
-
-      $soal = $this->db->query('select id from soalonline where materi_id = ' . $materi_id)->result();
-      $jawaban = $this->db->query('select jawaban,email,skor,benar,id_jawaban,create_add from jawaban where mode="1"   and materi_id = "'.$materi_id.'"   and email != ""  limit '.$limit)->result();
-
-     
-
-        // $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id = ' . $materi_id)->result();
-
-      //   $jawaban = $this->db->query('select * from jawaban where mode="1" and  materi_id = ' . $materi_id.'     limit 100 offset 500 ')->result();
-
-
-         // echo "<pre>";
-         // print_r($jawaban);
-         // die;
-
-
+        $soal = $this->db->query('select * from soalonline where materi_id = ' . $materi_id)->result();
+       $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id = "'.$materi_id.'" and id_event = "49" limit 50 OFFSET 500 ')->result();
 
 
 
         foreach ($jawaban as $j) {
 
 
-          
+            //error_reporting(0);
 
             $a = $this->objToArray(json_decode($j->jawaban));
 
@@ -273,7 +258,7 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
 
             foreach ($a as $key => $hasil_jawaban) {
 
-                $soal_materi = $this->db->query('select id,jawaban from soalonline where materi_id = ' . $materi_id)->result();
+                $soal_materi = $this->db->query('select * from soalonline where materi_id = ' . $materi_id)->result();
 
 
 
@@ -352,7 +337,7 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
 
 
 
-        $soal_materi2 = $this->db->query('select id,jawaban from soalonline where materi_id = ' . $materi_id)->result();
+        $soal_materi2 = $this->db->query('select * from soalonline where materi_id = ' . $materi_id)->result();
 
         foreach ($soal_materi2 as  $key) {
             $key12[] = $key;
@@ -360,16 +345,7 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
 
 
 
-
-
-
-
-
         foreach ($key12 as $k) {
-
-             // echo "<pre>";
-             //    print_r($data_jawaban);
-             //    die;
 
 
             $hitung = 0;
@@ -417,7 +393,7 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
 
 
 
-    public function irt($materi_id,$limit)
+    public function irt($materi_id)
     {
 
 
@@ -438,10 +414,10 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
 
         //  $materi_id = 217;
 
-        $materi = $this->db->query('select materi_id,materi_nama,id_event from materi where materi_id=' . $materi_id)->row();
+        $materi = $this->db->query('select * from materi where materi_id=' . $materi_id)->row();
 
 
-        $irt_hasil =  $this->hitung_irt($materi_id,$limit);
+        $irt_hasil =  $this->hitung_irt($materi_id);
 
 
 
@@ -834,10 +810,7 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
             'materi_nama' => $materi_nama,
             'data' => $z_score_hasil,
         );
-        // echo json_encode($data_json);
-
-
-        // die;
+        //echo json_encode($data_json);
 
 
         return $datajson;
@@ -851,7 +824,7 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
     }
 
 
-    function irt_event($id_event,$limit)
+    function irt_event($id_event)
     {
 
      //   $id_event = 29;
@@ -863,14 +836,14 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
 
 
 
-        $event = $this->db->query('select materi_id,materi_nama,id_event from materi where id_event=' . $id_event)->result();
+        $event = $this->db->query('select * from materi where id_event=' . $id_event)->result();
 
         //   echo "<pre>";
         //   print_r($event);  
         // die;
 
         foreach ($event as $e) {
-            $data_json[] = $this->irt($e->materi_id,$limit);
+            $data_json[] = $this->irt($e->materi_id);
         }
 
 
@@ -890,7 +863,7 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
                         $skor2 = $skor;
                     }
 
-                    $event = $this->db->query('select materi_id,materi_nama,id_event from materi where materi_id='.$j['materi_id'])->row();
+                    $event = $this->db->query('select * from materi where materi_id='.$j['materi_id'])->row();
 
                     // echo "<pre>";
                     // print_r($event);
@@ -912,7 +885,7 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
                              'skor'=>(string)$skor2,
                         );
 
-                      $cek = $this->db->query('select email,id_irt from irt where email="'.$email.'" and materi_id = "'.$j['materi_id'].'"')->row();
+                      $cek = $this->db->query('select * from irt where email="'.$email.'" and materi_id = "'.$j['materi_id'].'"')->row();
 
 
                       if($cek){
@@ -992,117 +965,88 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
     }
 
 
-    function kirim_irt_skor($page=null){
-
-       
-          $sql = $this->db->query("select e.judul,e.id_event,e.tgl_mulai,e.tgl_selesai,j.kategori_nama,j.id_kategori from event as e 
-        inner JOIN kategori as j on e.id_kategori=j.id_kategori
-                where  e.mode='event'")->result();
-
-
-        $hariini = date('Y-m-d');
-        $limit = 200;
-
-
-         foreach($sql as $key => $s){
-             if ($hariini >= $s->tgl_mulai) {
-
-                //jika hari ini kurang dari tgl selesai
-                if ($s->tgl_selesai >= $hariini) {
-
-                  // $q = $this->irt_event($s->id_event);
-
-                    $tes[] = $s->id_event;
-
-
-                }
-
-             }
-         }
-
-
-          echo "<pre>";
-          print_r($tes);
-        die;
-
-
-        // $tes = array(
-        //     'aktifitas'=>'tes log cron',
-        //     'datetime'=>date('Y-m-d H:i:s'),
-        // );
-
-        // $this->db->insert('log',$tes);
-        // die;
-
-
+    function kirim_irt_skor(){
         //   $sql = $this->db->query("select e.*,j.kategori_nama,j.id_kategori from event as e 
         // inner JOIN kategori as j on e.id_kategori=j.id_kategori
-        //         where  e.mode='event' and id_event in  (48,49)")->result();
+        //         where  e.mode='event'")->result();
 
 
         // $hariini = date('Y-m-d');
 
-        // $limit = 200;
-
 
         //  foreach($sql as $key => $s){
+        //      if ($hariini >= $s->tgl_mulai) {
+
+        //         //jika hari ini kurang dari tgl selesai
+        //         if ($s->tgl_selesai >= $hariini) {
+
+        //            $q = $this->irt_event($s->id_event);
+
+
+        //         }
+
+        //      }
+        //  }
+
+
+          $sql = $this->db->query("select e.*,j.kategori_nama,j.id_kategori from event as e 
+        inner JOIN kategori as j on e.id_kategori=j.id_kategori
+                where  e.mode='event' and id_event in  (48,49)")->result();
+
+
+        $hariini = date('Y-m-d');
+
+
+         foreach($sql as $key => $s){
             
 
-        //            $q = $this->irt_event($s->id_event,$limit);
+                   $q = $this->irt_event($s->id_event);
 
 
                
-        //  }
-
-         if($page==null){
-            $no = 1;   
-         }else{
-            $no = $page;
          }
 
-         
+
+
 
           if($q){
               $data_api['status'] = 200;
               $data_api['message'] = "sukses";
-              $data_api['page'] = $no;
+              $data_api['page'] = "1";
 
             
 
         }else{
             $data_api['status'] = 400;
               $data_api['message'] = "gagal";
-              $data_api['page'] = "0";
         }
 
-      echo json_encode($data_api);
-
-
-
-          //header("Location: http://34.101.187.174/~edunocom/backend.edunovasi.com/api_mobile/api_irt/kirim_irt_skor/2", TRUE, 301);
-
+        echo json_encode($data_api);
     }
 
- 
 
 
 
 
 
-  function kirim_irt_modif($id_event,$limit,$offset){
+  function kirim_irt_modif(){
+        //   $sql = $this->db->query("select e.*,j.kategori_nama,j.id_kategori from event as e 
+        // inner JOIN kategori as j on e.id_kategori=j.id_kategori
+        //         where  e.mode='event' and id_event = 48 ")->result();
+
+           $sql = $this->db->query("select e.*,j.kategori_nama,j.id_kategori from event as e 
+        inner JOIN kategori as j on e.id_kategori=j.id_kategori
+                where  e.mode='event' and id_event = 29 ")->result();
 
 
-    echo $id_event;
-    die;
+        $hariini = date('Y-m-d');
 
-       
-        
 
-          
+         foreach($sql as $key => $s){
 
-            $q = $this->irt_event($id_event);
+            $q = $this->irt_event($s->id_event);
            
-         
+         }
 
 
           if($q){
@@ -1341,7 +1285,7 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
 
 
        $count_materi = $this->db->query("select * from materi where id_event = '".$id_event."'" )->result();
-        $count_peserta = $this->db->query("select email from jawaban where id_event = '".$id_event."'  and email != '' and mode = 1  group by email" )->result();
+        $count_peserta = $this->db->query("select email from jawaban where id_event = '".$id_event."' and mode = 1  group by email" )->result();
        // $no_ranking2 = 0;
         foreach ($sql  as $key => $s) {
 
@@ -1370,288 +1314,4 @@ $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id 
 
         echo json_encode($posisi_rangking);
     }
-
-
-
-
-
-    //CARI NILAI
-
-    function hitung_irt_cari_nilai_bener_salah($materi_id,$email)
-    {
-
-        //$materi_id = 217;
-
-        error_reporting(0);
-
-       
-
-        $soal = $this->db->query('select * from soalonline where materi_id = ' . $materi_id)->result();
-       $jawaban = $this->db->query('select * from jawaban where mode="1"   and materi_id = "'.$materi_id.'"   and email  = "'.$email.'"')->result();
-
-     
-
-        // $jawaban = $this->db->query('select * from jawaban where mode="1" and materi_id = ' . $materi_id)->result();
-
-
-
-
-        foreach ($jawaban as $j) {
-
-
-          
-
-            $a = $this->objToArray(json_decode($j->jawaban));
-
-            // echo "<pre>";
-            // print_r($a);
-            // die;
-
-
-            foreach ($a as $key => $hasil_jawaban) {
-
-                $soal_materi = $this->db->query('select * from soalonline where materi_id = ' . $materi_id)->result();
-
-
-
-                foreach ($soal_materi as  $key) {
-                    $key1[] = $key;
-                }
-            }
-
-            // echo "<pre>";
-            // print_r($soal_materi);
-
-
-            foreach ($key1 as $key) {
-
-
-                if ($key->id == $a['ans_' . $key->id]['soal']) {
-
-                    //hitung benar
-                    if ($key->jawaban == $a['ans_' . $key->id]['jawaban']) {
-                        $data_array_jawaban[$key->id] = array(
-                            'soal_id' => $key->id,
-                            'hasil_pilihan' => 1,
-                        );
-
-
-
-
-
-
-
-                        //  echo "benar";
-                      } elseif ($a['ans_' . $key->id]['jawaban'] != $key->jawaban) {
-                            
-
-                            if($a['ans_' . $key->id]['jawaban'] ==0){
-
-                                $data_array_jawaban[$key->id] = array(
-                                    'soal_id' => $key->id,
-                                    'hasil_pilihan' => 0,
-                                );
-
-                            }else{
-                                $data_array_jawaban[$key->id] = array(
-                                    'soal_id' => $key->id,
-                                    'hasil_pilihan' => 2,
-                                );
-                            }
-
-                    }
-                } else {
-                    echo "gagal";
-                }
-            }
-
-
-
-            $data_jawaban[] = array(
-                'email' => $j->email,
-                'skor' => $j->skor,
-                'benar' => $j->benar,
-                'id_jawaban' => $j->id_jawaban,
-                //'jawaban'=>$a,
-                'data_array_jawaban' => $data_array_jawaban,
-                 'waktu'=>$j->create_add,
-            );
-        }
-
-        //  echo "<pre>";
-        // print_r($data_jawaban);
-        // die;
-
-
-
-        // mencari rata" persoal
-
-
-
-
-        $soal_materi2 = $this->db->query('select * from soalonline where materi_id = ' . $materi_id)->result();
-
-        foreach ($soal_materi2 as  $key) {
-            $key12[] = $key;
-        }
-
-
-
-
-
-
-
-
-        foreach ($key12 as $k) {
-
-             // echo "<pre>";
-             //    print_r($data_jawaban);
-             //    die;
-
-
-            $hitung = 0;
-            foreach ($data_jawaban as $j) {
-
-                // echo "<pre>";
-                // print_r($j['data_array_jawaban'][$k->id]);
-
-
-                // echo "<pre>";
-                // print_r($k->id);
-                // die;
-                if ($j['data_array_jawaban'][$k->id]['soal_id'] == $k->id) {
-
-
-
-
-                    $hitung +=  $j['data_array_jawaban'][$k->id]['hasil_pilihan'];
-
-                    $data_array_rata_rata[$k->id] = array(
-                        'soal_id' => $k->id,
-                        'jumlah' => $hitung,
-                    );
-                }
-
-                // echo "<pre>";
-                // print_r($j['data_array_jawaban']['3078']);
-            }
-        }
-
-
-
-        $data = array(
-            'jumlah_soal' => count($soal),
-            'jumlah_peserta' => count($jawaban),
-            'data_array_rata_rata' => $data_array_rata_rata,
-            'data_' => $data_jawaban,
-        );
-
-        //echo json_encode($data);
-
-        return $data;
-    }
-
-    function cari_nilai_benar_salah(){
-
-        $materi_id = $this->input->post('materi_id');
-        $email  = $this->input->post('email');
-
-
-        $materi = $this->db->query('select * from materi where materi_id= '.$materi_id)->row();
-
-
-        $irt_hasil =  $this->hitung_irt_cari_nilai_bener_salah($materi_id,$email);
-
-
-
-        // $data['irt'] = $this->convertToObject($irt_hasil);
-
-        // $data['materi_id'] = $materi_id;
-        // $data['materi_nama'] = $materi->materi_nama;
-        // $this->load->view('hasil_irt/irt',$data);
-
-
-
-
-
-
-
-        // echo "<pre>";
-        // print_r($irt->data_->{0});
-        // die;
-
-
-
-        $irt = $this->convertToObject($irt_hasil);
-
-        $materi_id = $materi_id;
-        $materi_nama = $materi->materi_nama;
-
-
-
-
-
-          foreach ($irt->data_ as $d) {
-
-                foreach ($d->data_array_jawaban as $j) {
-
-
-                    //    echo "<pre>";
-                    //    print_r($j);
-
-                        if ($j->hasil_pilihan == 1) {
-                           
-                            $hasil_benar[$d->email][]  = $j->hasil_pilihan;
-                        }
-
-                        else if ($j->hasil_pilihan == 2) {
-                           
-                            $hasil_salah[$d->email][]  = $j->hasil_pilihan;
-                        }
-                        
-                        
-                        else if ($j->hasil_pilihan == 0) {
-                          
-                            $hasil_kosong[$d->email][]  = $j->hasil_pilihan;
-                        }
-                    ?>
-
-
-                  
-
-                    <?php
-                    }
-            ?>
-
-               
-
-            <?php
-                     error_reporting(0);
-                        $data_desc = array(
-                            'email'=>$d->email,
-                            'waktu'=>$d->waktu,
-                            'skor_benar'=>     count($hasil_benar[$d->email]),
-                            'skor_salah'=>   count($hasil_salah[$d->email]),
-                            'skor_kosong'=>    count($hasil_kosong[$d->email]),
-                           //'jawaban'=> $d->data_array_jawaban,
-                            
-                        );
-
-     
-                      
-            }
-
-
-
-           echo json_encode($data_desc);
-    }
-
-
-
-
-    
-
-
-
-
 }

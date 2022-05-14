@@ -1,22 +1,23 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Event_M extends CI_Model
+class Irt_tarik_M extends CI_Model
 {
 
 
     //set nama tabel yang akan kita tampilkan datanya
-    var $table = 'event';
+    var $table = 'irt';
     //set kolom order, kolom pertama saya null untuk kolom edit dan hapus
-    var $column_order = array(null, 'judul');
+    var $column_order = array(null, 'email');
 
-    var $column_search = array('judul');
+    var $column_search = array('email');
     // default order 
-    var $order = array('id_event' => 'asc');
+    var $order = array('id_irt' => 'asc');
 
 
-    public $id_event;
-    public $judul;
+    public $id_irt;
+    public $email;
     
+
 
 
 
@@ -26,15 +27,17 @@ class Event_M extends CI_Model
         $this->load->database();
     }
 
-    private function _get_datatables_query()
-    {  
-        //$this->db->where('status','latihan');
+    private function _get_datatables_query($id_event)
+    {
 
-
-        $this->db->select('event.*,kategori.kategori_nama');
-		$this->db->join('kategori', 'kategori.id_kategori = event.id_kategori', 'inner');
+        //select *,sum(skor) as skor2  from irt where 
+        // id_event = '" . $id_event . "' and email != '' group by email  order by skor2 desc limit 30
+        $this->db->select('*,sum(skor) as skor2');
         $this->db->from($this->table);
-        $this->db->order_by('id_event','desc');
+        $this->db->where('id_event',$id_event);
+        $this->db->group_by('email'); 
+        $this->db->order_by('skor2', 'desc');
+
         $i = 0;
         foreach ($this->column_search as $item) // loop kolom 
         {
@@ -62,23 +65,23 @@ class Event_M extends CI_Model
         }
     }
 
-    function get_datatables()
+    function get_datatables($id_event)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($id_event);
         if ($this->input->post('length') != -1)
             $this->db->limit($this->input->post('length'), $this->input->post('start'));
         $query = $this->db->get();
         return $query->result();
     }
 
-    function count_filtered()
+    function count_filtered($id_event)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($id_event);
         $query = $this->db->get();
         return $query->num_rows();
     }
 
-    public function count_all()
+    public function count_all($id_event)
     {
         $this->db->from($this->table);
         return $this->db->count_all_results();
@@ -86,7 +89,7 @@ class Event_M extends CI_Model
 
 
 
-    // private $_table = "event";
+    // private $_table = "jenis";
 
   
 
@@ -97,36 +100,36 @@ class Event_M extends CI_Model
     
     public function getById($id)
     {
-        return $this->db->get_where($this->table, ["id_event" => $id])->row();
+        return $this->db->get_where($this->table, ["id_kategori" => $id])->row();
     }
 
     public function save($divisi)
     {
         // $post = $this->input->post();
-        // $this->id_event = uniqid();
-        // $this->judul = $divisi;
+        // $this->id_kategori = uniqid();
+        // $this->kategori_nama = $divisi;
         $data = array(
-            'judul'=>$divisi,
+            'kategori_nama'=>$divisi,
         );
-        return $this->db->insert('event', $data);
+        return $this->db->insert('kategori', $data);
     }
 
-    public function update($id_event,$judul)
+    public function update($id_kategori,$kategori_nama)
     {
         // $post = $this->input->post();
-        // $this->id_event = $id_event;
-        // $this->judul = $judul;
+        // $this->id_kategori = $id_kategori;
+        // $this->kategori_nama = $kategori_nama;
 
         $data = array(
-            'judul'=>$judul,
+            'kategori_nama'=>$kategori_nama,
         );
 
        
-        return $this->db->update('event', $data, array('id_event' => $id_event));
+        return $this->db->update('kategori', $data, array('id_kategori' => $id_kategori));
     }
 
     public function delete($id)
     {
-        return $this->db->delete($this->table, array("id_event" => $id));
+        return $this->db->delete($this->table, array("id_kategori" => $id));
     }
 }

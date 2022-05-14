@@ -5,10 +5,8 @@
     ?>
 
 <center><h3> Aktivitas  </h3><center>
-      <table id="" class="display nowrap table-striped table-bordered table" style="width:100%;
-                        overflow-y:scroll;
-                        overflow-x:scroll;
-                        height:700px;
+      <table id="example4 "class="display nowrap table-striped table-bordered table" style="width:100%;
+                        
                         ">
               <caption class="text-center"><br>
                </caption>

@@ -42,6 +42,7 @@
                                     <select name="kategori" class="form-control" required>
                                          <option value="mobile">Mobile</option>
                                          <option value="web">Web</option>
+                                         <option value="spescreen">Speshcreen</option>
                                     </select>
                                 </div>
 
